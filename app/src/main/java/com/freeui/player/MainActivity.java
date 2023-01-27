@@ -27,16 +27,16 @@ public class MainActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         setContentView(R.layout.activity_main);
         ExoPlayer player = new ExoPlayer.Builder(this).build();
-        FloatingActionButton play = (FloatingActionButton) findViewById(R.id.playBtn);
-        FloatingActionButton next = (FloatingActionButton) findViewById(R.id.nextBtn);
-        FloatingActionButton prev = (FloatingActionButton) findViewById(R.id.prevBtn);
-        TextView trackname = (TextView) findViewById(R.id.trackName);
-        TextView artist = (TextView) findViewById(R.id.composerName);
-        TextView time = (TextView) findViewById(R.id.timecode);
-        SeekBar progress = (SeekBar) findViewById(R.id.seekBar);
-        EditText mediaitem = (EditText) findViewById(R.id.MediaItem);
-        Button addtoqueue = (Button) findViewById(R.id.addtoqueue);
-        StyledPlayerView artwork = (StyledPlayerView) findViewById(R.id.imageView);
+        FloatingActionButton play = findViewById(R.id.playBtn);
+        FloatingActionButton next = findViewById(R.id.nextBtn);
+        FloatingActionButton prev = findViewById(R.id.prevBtn);
+        TextView trackname = findViewById(R.id.trackName);
+        TextView artist = findViewById(R.id.composerName);
+        TextView time = findViewById(R.id.timecode);
+        SeekBar progress = findViewById(R.id.seekBar);
+        EditText mediaitem = findViewById(R.id.MediaItem);
+        Button addtoqueue = findViewById(R.id.addtoqueue);
+        StyledPlayerView artwork = findViewById(R.id.imageView);
         artwork.setPlayer(player);
         addtoqueue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,7 +145,6 @@ public class MainActivity extends AppCompatActivity {
                 int playingSeconds = playingMs / 1000;
                 int playingMinutes = playingSeconds / 60;
                 player.seekTo((progress.getProgress() * 1000) % player.getDuration());
-                ;
                 progress.setProgress((int) ((player.getCurrentPosition() * 100) / player.getDuration()));
                 time.setText(String.format("%02d", playingMinutes % 60) + ":" + String.format("%02d", playingSeconds % 60) + "/" + String.format("%02d", totalMinutes % 60) + ":" + String.format("%02d", totalSeconds % 60));
             }
