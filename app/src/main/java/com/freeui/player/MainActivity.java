@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         setContentView(R.layout.activity_main);
         ExoPlayer player = new ExoPlayer.Builder(this).build();
         FloatingActionButton play = (FloatingActionButton) findViewById(R.id.playBtn);
@@ -42,13 +42,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String trackurl = mediaitem.getText().toString();
-                if(player.getMediaItemCount() == 0){
+                if (player.getMediaItemCount() == 0) {
                     player.addMediaItem(MediaItem.fromUri(trackurl));
                     trackname.setText(player.getMediaMetadata().displayTitle);
                     artist.setText(player.getMediaMetadata().artist);
                     player.prepare();
                     player.play();
-                }else{
+                } else {
                     player.addMediaItem(MediaItem.fromUri(trackurl));
                     player.prepare();
                 }
@@ -57,14 +57,14 @@ public class MainActivity extends AppCompatActivity {
         player.addListener(new Player.Listener() {
             @Override
             public void onTracksChanged(Tracks tracks) {
-                if(player.getMediaMetadata().title == null){
+                if (player.getMediaMetadata().title == null) {
                     trackname.setText("Unknown Track");
-                }else{
+                } else {
                     trackname.setText(player.getMediaMetadata().title);
                 }
-                if (player.getMediaMetadata().title == null){
+                if (player.getMediaMetadata().title == null) {
                     artist.setText("Unknown Artist");
-                }else{
+                } else {
                     artist.setText(player.getMediaMetadata().artist);
                 }
             }
@@ -82,18 +82,17 @@ public class MainActivity extends AppCompatActivity {
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(player.isPlaying() == true){
+                if (player.isPlaying() == true) {
                     player.pause();
-                    int timeMs=(int) player.getDuration();
+                    int timeMs = (int) player.getDuration();
                     int totalSeconds = timeMs / 1000;
-                    int totalMinutes = totalSeconds/60;
-                    int playingMs=(int) player.getCurrentPosition();
+                    int totalMinutes = totalSeconds / 60;
+                    int playingMs = (int) player.getCurrentPosition();
                     int playingSeconds = playingMs / 1000;
-                    int playingMinutes = playingSeconds/60;
-                    progress.setProgress((int) ((player.getCurrentPosition()*100)/player.getDuration()));
-                    time.setText(String.format("%02d", playingMinutes%60) + ":" + String.format("%02d", playingSeconds%60) + "/" + String.format("%02d", totalMinutes%60) + ":" + String.format("%02d", totalSeconds%60));
-                }
-                else{
+                    int playingMinutes = playingSeconds / 60;
+                    progress.setProgress((int) ((player.getCurrentPosition() * 100) / player.getDuration()));
+                    time.setText(String.format("%02d", playingMinutes % 60) + ":" + String.format("%02d", playingSeconds % 60) + "/" + String.format("%02d", totalMinutes % 60) + ":" + String.format("%02d", totalSeconds % 60));
+                } else {
                     player.play();
                 }
             }
@@ -102,28 +101,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 player.seekToNextMediaItem();
-                int timeMs=(int) player.getDuration();
+                int timeMs = (int) player.getDuration();
                 int totalSeconds = timeMs / 1000;
-                int totalMinutes = totalSeconds/60;
-                int playingMs=(int) player.getCurrentPosition();
+                int totalMinutes = totalSeconds / 60;
+                int playingMs = (int) player.getCurrentPosition();
                 int playingSeconds = playingMs / 1000;
-                int playingMinutes = playingSeconds/60;
-                progress.setProgress((int) ((player.getCurrentPosition()*100)/player.getDuration()));
-                time.setText(String.format("%02d", playingMinutes%60) + ":" + String.format("%02d", playingSeconds%60) + "/" + String.format("%02d", totalMinutes%60) + ":" + String.format("%02d", totalSeconds%60));
+                int playingMinutes = playingSeconds / 60;
+                progress.setProgress((int) ((player.getCurrentPosition() * 100) / player.getDuration()));
+                time.setText(String.format("%02d", playingMinutes % 60) + ":" + String.format("%02d", playingSeconds % 60) + "/" + String.format("%02d", totalMinutes % 60) + ":" + String.format("%02d", totalSeconds % 60));
             }
         });
         prev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 player.seekToPreviousMediaItem();
-                int timeMs=(int) player.getDuration();
+                int timeMs = (int) player.getDuration();
                 int totalSeconds = timeMs / 1000;
-                int totalMinutes = totalSeconds/60;
-                int playingMs=(int) player.getCurrentPosition();
+                int totalMinutes = totalSeconds / 60;
+                int playingMs = (int) player.getCurrentPosition();
                 int playingSeconds = playingMs / 1000;
-                int playingMinutes = playingSeconds/60;
-                progress.setProgress((int) ((player.getCurrentPosition()*100)/player.getDuration()));
-                time.setText(String.format("%02d", playingMinutes%60) + ":" + String.format("%02d", playingSeconds%60) + "/" + String.format("%02d", totalMinutes%60) + ":" + String.format("%02d", totalSeconds%60));
+                int playingMinutes = playingSeconds / 60;
+                progress.setProgress((int) ((player.getCurrentPosition() * 100) / player.getDuration()));
+                time.setText(String.format("%02d", playingMinutes % 60) + ":" + String.format("%02d", playingSeconds % 60) + "/" + String.format("%02d", totalMinutes % 60) + ":" + String.format("%02d", totalSeconds % 60));
             }
         });
         progress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -139,15 +138,16 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                int timeMs=(int) player.getDuration();
+                int timeMs = (int) player.getDuration();
                 int totalSeconds = timeMs / 1000;
-                int totalMinutes = totalSeconds/60;
-                int playingMs=(int) player.getCurrentPosition();
+                int totalMinutes = totalSeconds / 60;
+                int playingMs = (int) player.getCurrentPosition();
                 int playingSeconds = playingMs / 1000;
-                int playingMinutes = playingSeconds/60;
-                player.seekTo((progress.getProgress()*1000)%player.getDuration());;
-                progress.setProgress((int) ((player.getCurrentPosition()*100)/player.getDuration()));
-                time.setText(String.format("%02d", playingMinutes%60) + ":" + String.format("%02d", playingSeconds%60) + "/" + String.format("%02d", totalMinutes%60) + ":" + String.format("%02d", totalSeconds%60));
+                int playingMinutes = playingSeconds / 60;
+                player.seekTo((progress.getProgress() * 1000) % player.getDuration());
+                ;
+                progress.setProgress((int) ((player.getCurrentPosition() * 100) / player.getDuration()));
+                time.setText(String.format("%02d", playingMinutes % 60) + ":" + String.format("%02d", playingSeconds % 60) + "/" + String.format("%02d", totalMinutes % 60) + ":" + String.format("%02d", totalSeconds % 60));
             }
         });
     }
