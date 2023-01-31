@@ -60,7 +60,8 @@ public class MainActivity extends AppCompatActivity {
                 status.setVisibility(View.VISIBLE);
                 status.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.err));
                 trackname.setText("Playback error!");
-                artist.setText("Probably it's because the link doesn't have a raw mediafile");
+                artist.setText("Probably it's because the link doesn't have a raw mediafile, the mediaItem has been removed to not cause issues.");
+                player.removeMediaItem(player.getCurrentMediaItemIndex());
             }
         });
         player.addListener(new MyEventListener(time, player, progress));
