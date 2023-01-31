@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         ImageButton eq = findViewById(R.id.EQ);
         ImageButton settings = findViewById(R.id.settings);
         ImageView status = findViewById(R.id.status);
+        Intent myIntent = new Intent(this, StorageActivity.class);
         player.addListener(new Player.Listener() {
             @Override
             public void onPlayerError(PlaybackException error) {
@@ -89,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         net.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                startActivity(myIntent);
             }
         });
         eq.setOnClickListener(new View.OnClickListener() {

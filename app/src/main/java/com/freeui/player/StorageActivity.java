@@ -10,13 +10,13 @@ import android.widget.EditText;
 import com.google.android.exoplayer2.MediaItem;
 
 public class StorageActivity extends AppCompatActivity {
-/*    EditText mediaitem = (EditText) findViewById(R.id.mediaItem);
-    Button addtoqueue = (Button) findViewById(R.id.addtoqueue);
+    //EditText mediaitem = (EditText) findViewById(R.id.mediaItem);
+    //Button addtoqueue = (Button) findViewById(R.id.addtoqueue);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_storage);
-        addtoqueue.setOnClickListener(new View.OnClickListener() {
+        /*addtoqueue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String trackurl = mediaitem.getText().toString();
@@ -27,6 +27,6 @@ public class StorageActivity extends AppCompatActivity {
                 trackname.setText(player.getMediaMetadata().displayTitle);
                 artist.setText(player.getMediaMetadata().artist);
             }
-        });
-    }*/
+        });*/
+    }
 }
