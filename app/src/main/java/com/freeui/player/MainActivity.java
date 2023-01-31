@@ -61,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
                 status.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.err));
                 trackname.setText("Playback error!");
                 artist.setText("Probably it's because the link doesn't have a raw mediafile, the mediaItem has been removed to not cause issues.");
+                Toast.makeText(getApplicationContext(), error.getLocalizedMessage(),
+                        Toast.LENGTH_LONG).show();
                 player.removeMediaItem(player.getCurrentMediaItemIndex());
             }
         });
@@ -126,13 +128,13 @@ public class MainActivity extends AppCompatActivity {
                     trackname.setText(player.getMediaMetadata().displayTitle);
                     artist.setText(player.getMediaMetadata().artist);
                     Toast.makeText(getApplicationContext(), "Added track, starting playback...",
-                            Toast.LENGTH_LONG).show();
+                            Toast.LENGTH_SHORT).show();
                     player.prepare();
                     player.play();
                 } else {
                     player.addMediaItem(MediaItem.fromUri(trackurl));
                     Toast.makeText(getApplicationContext(), "Added track to queue...",
-                            Toast.LENGTH_LONG).show();
+                            Toast.LENGTH_SHORT).show();
                     player.prepare();
                 }
             }
