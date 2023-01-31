@@ -59,7 +59,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.162"
         app:use_artwork="true"
-        app:use_controller="false" />
+        app:use_controller="false">
+
+        <ImageView
+            android:id="@+id/status"
+            android:layout_width="256dp"
+            android:layout_height="256dp"
+            app:default_artwork="@drawable/artwork"
+            app:srcCompat="@drawable/noplay"
+            app:use_artwork="true"
+            app:use_controller="false" />
+    </com.google.android.exoplayer2.ui.StyledPlayerView>
 
     <TextView
         android:id="@+id/composerName"
@@ -115,7 +125,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/imageButton3"
+        android:id="@+id/net"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:background="@drawable/corner_flower_alt"
@@ -125,7 +135,7 @@
         app:srcCompat="@drawable/devices_48px" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/EQ"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:background="@drawable/corner_flower_top_alt"
@@ -135,7 +145,7 @@
         app:srcCompat="@drawable/graphic_eq_48px" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/settings"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:background="@drawable/corner_flower_top"
@@ -172,7 +182,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/imageButton4"
+        android:id="@+id/local"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:background="@drawable/corner_flower"
@@ -180,5 +190,31 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/folder_open_48px" />
+
+    <ImageButton
+        android:id="@+id/repeat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#00000000"
+        android:tint="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/prevBtn"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar"
+        app:srcCompat="@drawable/repeat_48px" />
+
+    <ImageButton
+        android:id="@+id/shuffle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#00000000"
+        android:tint="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toEndOf="@+id/nextBtn"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar"
+        app:srcCompat="@drawable/shuffle_48px" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

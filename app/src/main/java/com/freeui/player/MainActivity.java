@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -42,8 +43,50 @@ public class MainActivity extends AppCompatActivity {
         EditText mediaitem = findViewById(R.id.MediaItem);
         Button addtoqueue = findViewById(R.id.addtoqueue);
         StyledPlayerView artwork = findViewById(R.id.imageView);
+        ImageButton repeat = findViewById(R.id.repeat);
+        ImageButton shuffle = findViewById(R.id.repeat);
+        ImageButton local = findViewById(R.id.local);
+        ImageButton net = findViewById(R.id.net);
+        ImageButton eq = findViewById(R.id.EQ);
+        ImageButton settings = findViewById(R.id.settings);
         player.addListener(new MyEventListener(time, player, progress));
         artwork.setPlayer(player);
+        shuffle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        local.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        net.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        eq.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        repeat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
         addtoqueue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
