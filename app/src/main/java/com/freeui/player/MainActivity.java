@@ -2,6 +2,7 @@ package com.freeui.player;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 
 import android.content.pm.ActivityInfo;
@@ -11,11 +12,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.Tracks;
@@ -44,17 +48,31 @@ public class MainActivity extends AppCompatActivity {
         Button addtoqueue = findViewById(R.id.addtoqueue);
         StyledPlayerView artwork = findViewById(R.id.imageView);
         ImageButton repeat = findViewById(R.id.repeat);
-        ImageButton shuffle = findViewById(R.id.repeat);
+        ImageButton shuffle = findViewById(R.id.shuffle);
         ImageButton local = findViewById(R.id.local);
         ImageButton net = findViewById(R.id.net);
         ImageButton eq = findViewById(R.id.EQ);
         ImageButton settings = findViewById(R.id.settings);
+        ImageView status = findViewById(R.id.status);
+        player.addListener(new Player.Listener() {
+            @Override
+            public void onPlayerError(PlaybackException error) {
+                status.setVisibility(View.VISIBLE);
+                status.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.err));
+            }
+        });
         player.addListener(new MyEventListener(time, player, progress));
         artwork.setPlayer(player);
         shuffle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if(player.getShuffleModeEnabled() == true){
+                    player.setShuffleModeEnabled(false);
+                    shuffle.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.shuffle_48px));
+                }else if (player.getShuffleModeEnabled() == false){
+                    player.setShuffleModeEnabled(true);
+                    shuffle.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.shuffle_on_48px));
+                }
             }
         });
         local.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +102,16 @@ public class MainActivity extends AppCompatActivity {
         repeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (player.getRepeatMode() == Player.REPEAT_MODE_OFF){
+                    player.setRepeatMode(Player.REPEAT_MODE_ALL);
+                    repeat.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.repeat_on_48px));
+                }else if(player.getRepeatMode() == Player.REPEAT_MODE_ALL){
+                    player.setRepeatMode(Player.REPEAT_MODE_ONE);
+                    repeat.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.repeat_one_on_48px));
+                }else{
+                    player.setRepeatMode(Player.REPEAT_MODE_OFF);
+                    repeat.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.repeat_48px));
+                }
             }
         });
         addtoqueue.setOnClickListener(new View.OnClickListener() {
@@ -95,10 +122,14 @@ public class MainActivity extends AppCompatActivity {
                     player.addMediaItem(MediaItem.fromUri(trackurl));
                     trackname.setText(player.getMediaMetadata().displayTitle);
                     artist.setText(player.getMediaMetadata().artist);
+                    Toast.makeText(getApplicationContext(), "Added track, starting playback...",
+                            Toast.LENGTH_LONG).show();
                     player.prepare();
                     player.play();
                 } else {
                     player.addMediaItem(MediaItem.fromUri(trackurl));
+                    Toast.makeText(getApplicationContext(), "Added track to queue...",
+                            Toast.LENGTH_LONG).show();
                     player.prepare();
                 }
             }
@@ -123,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
             public void onIsPlayingChanged(boolean isPlaying) {
                 if (isPlaying) {
                     play.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.pause_48px));
+                    status.setVisibility(View.INVISIBLE);
                 } else {
                     play.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.play_arrow_48px));
                 }
