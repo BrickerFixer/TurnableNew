@@ -59,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
             public void onPlayerError(PlaybackException error) {
                 status.setVisibility(View.VISIBLE);
                 status.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.err));
+                trackname.setText("Playback error!");
+                artist.setText("Probably it's because the link doesn't have a raw mediafile");
             }
         });
         player.addListener(new MyEventListener(time, player, progress));
