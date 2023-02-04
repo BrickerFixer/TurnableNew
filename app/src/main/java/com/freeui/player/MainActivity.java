@@ -1,8 +1,6 @@
 package com.freeui.player;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
@@ -24,11 +22,9 @@ import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.Tracks;
-import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.StyledPlayerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.imageview.ShapeableImageView;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         setContentView(R.layout.activity_main);
-        ExoPlayer player = new ExoPlayer.Builder(this).build();
+        ExoPlayer player = new ExoPlayer.Builder(getApplicationContext()).build();
         FloatingActionButton play = findViewById(R.id.playBtn);
         FloatingActionButton next = findViewById(R.id.nextBtn);
         FloatingActionButton prev = findViewById(R.id.prevBtn);
@@ -45,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
         TextView artist = findViewById(R.id.composerName);
         TextView time = findViewById(R.id.timecode);
         SeekBar progress = findViewById(R.id.seekBar);
-        EditText mediaitem = findViewById(R.id.MediaItem);
-        Button addtoqueue = findViewById(R.id.addtoqueue);
         StyledPlayerView artwork = findViewById(R.id.imageView);
         ImageButton repeat = findViewById(R.id.repeat);
         ImageButton shuffle = findViewById(R.id.shuffle);
@@ -55,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
         ImageButton eq = findViewById(R.id.EQ);
         ImageButton settings = findViewById(R.id.settings);
         ImageView status = findViewById(R.id.status);
-        Intent myIntent = new Intent(this, StorageActivity.class);
+        Intent toStorage = new Intent(this, StorageActivity.class);
+        Intent serviceIntent = new Intent(this, ExoplayerService.class);
         player.addListener(new Player.Listener() {
             @Override
             public void onPlayerError(PlaybackException error) {
@@ -91,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         net.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(myIntent);
+                startActivity(toStorage);
             }
         });
         eq.setOnClickListener(new View.OnClickListener() {
@@ -118,26 +113,6 @@ public class MainActivity extends AppCompatActivity {
                 }else{
                     player.setRepeatMode(Player.REPEAT_MODE_OFF);
                     repeat.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.repeat_48px));
-                }
-            }
-        });
-        addtoqueue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String trackurl = mediaitem.getText().toString();
-                if (player.getMediaItemCount() == 0) {
-                    player.addMediaItem(MediaItem.fromUri(trackurl));
-                    trackname.setText(player.getMediaMetadata().displayTitle);
-                    artist.setText(player.getMediaMetadata().artist);
-                    Toast.makeText(getApplicationContext(), "Added track, starting playback...",
-                            Toast.LENGTH_SHORT).show();
-                    player.prepare();
-                    player.play();
-                } else {
-                    player.addMediaItem(MediaItem.fromUri(trackurl));
-                    Toast.makeText(getApplicationContext(), "Added track to queue...",
-                            Toast.LENGTH_SHORT).show();
-                    player.prepare();
                 }
             }
         });

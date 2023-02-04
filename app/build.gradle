@@ -27,8 +27,8 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
-
 dependencies {
+    implementation 'com.github.HaarigerHarald:android-youtubeExtractor:v1.7.0'
     implementation 'com.google.android.exoplayer:extension-workmanager:2.18.2'
     implementation 'com.google.android.exoplayer:exoplayer:2.18.2'
     implementation 'androidx.appcompat:appcompat:1.5.1'
