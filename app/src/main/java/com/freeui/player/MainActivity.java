@@ -1,12 +1,19 @@
 package com.freeui.player;
 
+import static com.freeui.player.ExoplayerService.player;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.app.Service;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,13 +34,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 public class MainActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         setContentView(R.layout.activity_main);
-        ExoPlayer player = new ExoPlayer.Builder(getApplicationContext()).build();
         FloatingActionButton play = findViewById(R.id.playBtn);
         FloatingActionButton next = findViewById(R.id.nextBtn);
         FloatingActionButton prev = findViewById(R.id.prevBtn);
@@ -51,136 +56,152 @@ public class MainActivity extends AppCompatActivity {
         ImageView status = findViewById(R.id.status);
         Intent toStorage = new Intent(this, StorageActivity.class);
         Intent serviceIntent = new Intent(this, ExoplayerService.class);
-        player.addListener(new Player.Listener() {
+        //String trackurl = "https://archive.org/download/vintage-romance-wxv78d/18%20Carat%20Affair%20-%20Vintage%20Romance%20-%2005%20Watching%20Your%20Dance.flac";
+        //serviceIntent.putExtra("mediaitem", trackurl);
+        startService(serviceIntent);
+        ServiceConnection sConn = new ServiceConnection() {
             @Override
-            public void onPlayerError(PlaybackException error) {
-                status.setVisibility(View.VISIBLE);
-                status.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.err));
-                trackname.setText("Playback error!");
-                artist.setText("Probably it's because the link doesn't have a raw mediafile, the mediaItem has been removed to not cause issues.");
-                Toast.makeText(getApplicationContext(), error.getLocalizedMessage(),
-                        Toast.LENGTH_LONG).show();
-                player.removeMediaItem(player.getCurrentMediaItemIndex());
+            public void onServiceConnected(ComponentName name, IBinder binder) {
+                ExoplayerService exoService = ((ExoplayerService.PlayerBinder)binder).getService();
+                player.addListener(new Player.Listener() {
+                    @Override
+                    public void onPlayerError(@NonNull PlaybackException error) {
+                        status.setVisibility(View.VISIBLE);
+                        status.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.err));
+                        trackname.setText("Playback error!");
+                        artist.setText("Probably it's because the link doesn't have a raw mediafile, the mediaItem has been removed to not cause issues.");
+                        Toast.makeText(getApplicationContext(), error.getLocalizedMessage(),
+                                Toast.LENGTH_LONG).show();
+                        player.removeMediaItem(player.getCurrentMediaItemIndex());
+                    }
+                });
+                player.addListener(new MyEventListener(time, player, progress));
+                artwork.setPlayer(player);
+                shuffle.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(player.getShuffleModeEnabled() == true){
+                            player.setShuffleModeEnabled(false);
+                            shuffle.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.shuffle_48px));
+                        }else if (player.getShuffleModeEnabled() == false){
+                            player.setShuffleModeEnabled(true);
+                            shuffle.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.shuffle_on_48px));
+                        }
+                    }
+                });
+                local.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                net.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(toStorage);
+                    }
+                });
+                eq.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                settings.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                repeat.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (player.getRepeatMode() == Player.REPEAT_MODE_OFF){
+                            player.setRepeatMode(Player.REPEAT_MODE_ALL);
+                            repeat.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.repeat_on_48px));
+                        }else if(player.getRepeatMode() == Player.REPEAT_MODE_ALL){
+                            player.setRepeatMode(Player.REPEAT_MODE_ONE);
+                            repeat.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.repeat_one_on_48px));
+                        }else{
+                            player.setRepeatMode(Player.REPEAT_MODE_OFF);
+                            repeat.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.repeat_48px));
+                        }
+                    }
+                });
+                player.addListener(new Player.Listener() {
+                    @Override
+                    public void onTracksChanged(Tracks tracks) {
+                        if (player.getMediaMetadata().title == null) {
+                            trackname.setText("Unknown Track");
+                        } else {
+                            trackname.setText(player.getMediaMetadata().title);
+                        }
+                        if (player.getMediaMetadata().title == null) {
+                            artist.setText("Unknown Artist");
+                        } else {
+                            artist.setText(player.getMediaMetadata().artist);
+                        }
+                    }
+                });
+                player.addListener(new Player.Listener() {
+                    @Override
+                    public void onIsPlayingChanged(boolean isPlaying) {
+                        if (isPlaying) {
+                            play.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.pause_48px));
+                            status.setVisibility(View.INVISIBLE);
+                        } else {
+                            play.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.play_arrow_48px));
+                        }
+                    }
+                });
+                play.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (player.isPlaying() == true) {
+                            player.pause();
+                        } else {
+                            player.play();
+                        }
+                    }
+                });
+                next.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        player.seekToNextMediaItem();
+                    }
+                });
+                prev.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        player.seekToPreviousMediaItem();
+                    }
+                });
+                progress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                        int timeMs = (int) player.getDuration();
+                        int totalSeconds = timeMs / 1000;
+                        player.seekTo(1000*((progress.getProgress() * 200) / totalSeconds));
+                    }
+                });
             }
-        });
-        player.addListener(new MyEventListener(time, player, progress));
-        artwork.setPlayer(player);
-        shuffle.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onClick(View view) {
-                if(player.getShuffleModeEnabled() == true){
-                    player.setShuffleModeEnabled(false);
-                    shuffle.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.shuffle_48px));
-                }else if (player.getShuffleModeEnabled() == false){
-                    player.setShuffleModeEnabled(true);
-                    shuffle.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.shuffle_on_48px));
-                }
-            }
-        });
-        local.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            public void onServiceDisconnected(ComponentName componentName) {
 
             }
-        });
-        net.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(toStorage);
-            }
-        });
-        eq.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-        settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-        repeat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (player.getRepeatMode() == Player.REPEAT_MODE_OFF){
-                    player.setRepeatMode(Player.REPEAT_MODE_ALL);
-                    repeat.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.repeat_on_48px));
-                }else if(player.getRepeatMode() == Player.REPEAT_MODE_ALL){
-                    player.setRepeatMode(Player.REPEAT_MODE_ONE);
-                    repeat.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.repeat_one_on_48px));
-                }else{
-                    player.setRepeatMode(Player.REPEAT_MODE_OFF);
-                    repeat.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.repeat_48px));
-                }
-            }
-        });
-        player.addListener(new Player.Listener() {
-            @Override
-            public void onTracksChanged(Tracks tracks) {
-                if (player.getMediaMetadata().title == null) {
-                    trackname.setText("Unknown Track");
-                } else {
-                    trackname.setText(player.getMediaMetadata().title);
-                }
-                if (player.getMediaMetadata().title == null) {
-                    artist.setText("Unknown Artist");
-                } else {
-                    artist.setText(player.getMediaMetadata().artist);
-                }
-            }
-        });
-        player.addListener(new Player.Listener() {
-            @Override
-            public void onIsPlayingChanged(boolean isPlaying) {
-                if (isPlaying) {
-                    play.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.pause_48px));
-                    status.setVisibility(View.INVISIBLE);
-                } else {
-                    play.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.play_arrow_48px));
-                }
-            }
-        });
-        play.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (player.isPlaying() == true) {
-                    player.pause();
-                } else {
-                    player.play();
-                }
-            }
-        });
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                player.seekToNextMediaItem();
-            }
-        });
-        prev.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                player.seekToPreviousMediaItem();
-            }
-        });
-        progress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                int timeMs = (int) player.getDuration();
-                int totalSeconds = timeMs / 1000;
-                player.seekTo(1000*((progress.getProgress() * 200) / totalSeconds));
-            }
-        });
+        };
+        bindService(serviceIntent, sConn, BIND_AUTO_CREATE);
+        ExoPlayer player = ExoplayerService.player;
     }
 }
 class MyEventListener implements ExoPlayer.Listener {
