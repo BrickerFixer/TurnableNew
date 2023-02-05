@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onStopTrackingTouch(SeekBar seekBar) {
                         int timeMs = (int) player.getDuration();
                         int totalSeconds = timeMs / 1000;
-                        player.seekTo(1000*((progress.getProgress() * 200) / totalSeconds));
+                        player.seekTo(progress.getProgress()*timeMs));
                     }
                 });
             }
