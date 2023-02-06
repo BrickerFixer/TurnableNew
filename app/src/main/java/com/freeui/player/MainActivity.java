@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         setContentView(R.layout.activity_main);
-        BitmapDrawable bitmapDrawable  = new BitmapDrawable(getResources(), BitmapFactory.decodeResource(getResources(), R.drawable.pattern));
+        BitmapDrawable bitmapDrawable  = new BitmapDrawable(getResources(), BitmapFactory.decodeResource(getResources(), R.drawable.img));
         ImageView bg = findViewById(R.id.imageView2);
         bitmapDrawable.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
         bg.setImageDrawable(bitmapDrawable);
