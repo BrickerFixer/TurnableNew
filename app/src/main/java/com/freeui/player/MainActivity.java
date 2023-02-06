@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         ImageButton settings = findViewById(R.id.settings);
         ImageView status = findViewById(R.id.status);
         Intent toStorage = new Intent(this, StorageActivity.class);
+        Intent toLocal = new Intent(this, LocalActivity.class);
         Intent serviceIntent = new Intent(this, ExoplayerService.class);
         startService(serviceIntent);
         ServiceConnection sConn = new ServiceConnection() {
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 local.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
+                        startActivity(toLocal);
                     }
                 });
                 net.setOnClickListener(new View.OnClickListener() {
@@ -186,7 +187,9 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
-                        player.seekTo((progress.getProgress()* (int) player.getDuration())/100);
+                        if(player.getMediaItemCount() != 0) {
+                            player.seekTo((progress.getProgress() * (int) player.getDuration()) / 100);
+                        }
                     }
                 });
             }
