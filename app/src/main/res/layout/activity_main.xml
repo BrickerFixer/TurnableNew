@@ -8,13 +8,15 @@
     android:backgroundTintMode="screen"
     tools:context=".MainActivity">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <ImageButton
         android:id="@+id/nextBtn"
         style="@style/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@drawable/button_focused"
         android:clickable="true"
         android:src="@drawable/skip_next_48px"
+        android:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.1"
@@ -39,7 +41,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/mono"
         android:gravity="center"
-        android:text="No tracks playing"
+        android:text="@string/noplay"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="24sp"
@@ -80,7 +82,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/mono"
         android:gravity="center"
-        android:text="Please, add track through any tab at the bottom"
+        android:text="@string/hint"
         android:textAlignment="center"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/seekBar"
@@ -90,39 +92,41 @@
         app:layout_constraintTop_toBottomOf="@id/imageView"
         app:layout_constraintVertical_bias="0.818" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <ImageButton
         android:id="@+id/prevBtn"
         style="@style/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@drawable/button_focused"
         android:clickable="true"
         android:src="@drawable/skip_previous_48px"
+        android:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/playBtn"
         app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/seekBar" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <ImageButton
         android:id="@+id/playBtn"
         style="@style/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/button"
         android:clickable="true"
         android:src="@drawable/play_arrow_48px"
-        app:fabCustomSize="100dp"
+        android:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seekBar"
-        app:maxImageSize="48dp" />
+        app:layout_constraintTop_toBottomOf="@+id/seekBar" />
 
     <ImageButton
         android:id="@+id/net"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:background="@drawable/corner_flower_alt"
-        android:tint="#FFFFFF"
+        android:tint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/devices_48px" />
@@ -132,7 +136,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:background="@drawable/corner_flower_top_alt"
-        android:tint="#FFFFFF"
+        android:tint="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/graphic_eq_48px" />
@@ -142,7 +146,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:background="@drawable/corner_flower_top"
-        android:tint="#FFFFFF"
+        android:tint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/settings_48px" />
@@ -163,7 +167,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:background="@drawable/corner_flower"
-        android:tint="#FFFFFF"
+        android:tint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/folder_open_48px" />
@@ -173,7 +177,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#00000000"
-        android:tint="#FFFFFF"
+        android:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/prevBtn"
         app:layout_constraintHorizontal_bias="0.9"
@@ -186,7 +190,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#00000000"
-        android:tint="#FFFFFF"
+        android:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.1"

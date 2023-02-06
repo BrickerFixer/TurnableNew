@@ -39,9 +39,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         setContentView(R.layout.activity_main);
-        FloatingActionButton play = findViewById(R.id.playBtn);
-        FloatingActionButton next = findViewById(R.id.nextBtn);
-        FloatingActionButton prev = findViewById(R.id.prevBtn);
+        ImageButton play = findViewById(R.id.playBtn);
+        ImageButton next = findViewById(R.id.nextBtn);
+        ImageButton prev = findViewById(R.id.prevBtn);
         TextView trackname = findViewById(R.id.trackName);
         TextView artist = findViewById(R.id.composerName);
         TextView time = findViewById(R.id.timecode);
@@ -77,8 +77,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onPlayerError(@NonNull PlaybackException error) {
                         status.setVisibility(View.VISIBLE);
                         status.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.err));
-                        trackname.setText("Playback error!");
-                        artist.setText("Probably it's because the link doesn't have a raw mediafile, the mediaItem has been removed to not cause issues.");
+                        trackname.setText(R.string.error);
+                        artist.setText(R.string.error_hint);
                         Toast.makeText(getApplicationContext(), error.getLocalizedMessage(),
                                 Toast.LENGTH_LONG).show();
                         player.removeMediaItem(player.getCurrentMediaItemIndex());
@@ -89,10 +89,10 @@ public class MainActivity extends AppCompatActivity {
                 shuffle.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(player.getShuffleModeEnabled() == true){
+                        if(player.getShuffleModeEnabled()){
                             player.setShuffleModeEnabled(false);
                             shuffle.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.shuffle_48px));
-                        }else if (player.getShuffleModeEnabled() == false){
+                        }else if (!player.getShuffleModeEnabled()){
                             player.setShuffleModeEnabled(true);
                             shuffle.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.shuffle_on_48px));
                         }
@@ -141,12 +141,12 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onTracksChanged(Tracks tracks) {
                         if (player.getMediaMetadata().title == null) {
-                            trackname.setText("Unknown Track");
+                            trackname.setText(R.string.unknown_track);
                         } else {
                             trackname.setText(player.getMediaMetadata().title);
                         }
                         if (player.getMediaMetadata().title == null) {
-                            artist.setText("Unknown Artist");
+                            artist.setText(R.string.unknown_artist);
                         } else {
                             artist.setText(player.getMediaMetadata().artist);
                         }

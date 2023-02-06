@@ -12,4 +12,10 @@
     <string name="media_url_mp3_3">https://dl1.mp3party.net/download/10475380</string>
     <string name="media_url_mp3_4">https://dl1.mp3party.net/download/10320642</string>
     <string name="media_url_mp3_5">https://dl1.mp3party.net/download/9032798</string>
+    <string name="error_hint">Probably it\'s because the link doesn\'t have a raw mediafile, the mediaItem has been removed to not cause issues.</string>
+    <string name="error">Playback error!</string>
+    <string name="unknown_track">Unknown Track</string>
+    <string name="unknown_artist">Unknown Artist</string>
+    <string name="hint">Please, add tracks through any tab at the bottom</string>
+    <string name="noplay">No tracks playing</string>
 </resources>
