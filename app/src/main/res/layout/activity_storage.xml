@@ -17,20 +17,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <Button
-            android:id="@+id/addtoqueuebtt"
-            style="@style/Widget.AppCompat.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/mono"
-            android:text="Add to queue"
-            app:icon="@drawable/add_to_queue_48px"
-            app:iconGravity="textEnd"
-            app:iconSize="24dp" />
-
         <EditText
             android:id="@+id/queueItem"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
             android:fontFamily="@font/mono"
@@ -38,6 +27,18 @@
             android:inputType="textPersonName"
             android:textAlignment="center"
             android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/addtoqueuebtt"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/mono"
+            android:text="Add to queue"
+            app:icon="@drawable/add_to_queue_48px"
+            app:iconGravity="textEnd"
+            app:iconSize="24dp" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

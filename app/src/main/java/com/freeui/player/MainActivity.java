@@ -56,8 +56,6 @@ public class MainActivity extends AppCompatActivity {
         ImageView status = findViewById(R.id.status);
         Intent toStorage = new Intent(this, StorageActivity.class);
         Intent serviceIntent = new Intent(this, ExoplayerService.class);
-        //String trackurl = "https://archive.org/download/vintage-romance-wxv78d/18%20Carat%20Affair%20-%20Vintage%20Romance%20-%2005%20Watching%20Your%20Dance.flac";
-        //serviceIntent.putExtra("mediaitem", trackurl);
         startService(serviceIntent);
         ServiceConnection sConn = new ServiceConnection() {
             @Override
@@ -188,9 +186,7 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
-                        int timeMs = (int) player.getDuration();
-                        int totalSeconds = timeMs / 1000;
-                        player.seekTo(progress.getProgress()*timeMs);
+                        player.seekTo((progress.getProgress()* (int) player.getDuration())/100);
                     }
                 });
             }
