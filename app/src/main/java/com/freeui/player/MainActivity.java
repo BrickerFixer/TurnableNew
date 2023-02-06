@@ -64,6 +64,16 @@ public class MainActivity extends AppCompatActivity {
                 ExoplayerService exoService = ((ExoplayerService.PlayerBinder)binder).getService();
                 player.addListener(new Player.Listener() {
                     @Override
+                    public void onIsLoadingChanged(boolean isLoading) {
+                        if (player.isLoading()){
+                            play.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.sync_48px));
+                        } else {
+                            play.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.pause_48px));
+                        }
+                    }
+                });
+                player.addListener(new Player.Listener() {
+                    @Override
                     public void onPlayerError(@NonNull PlaybackException error) {
                         status.setVisibility(View.VISIBLE);
                         status.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.err));
@@ -149,7 +159,11 @@ public class MainActivity extends AppCompatActivity {
                             play.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.pause_48px));
                             status.setVisibility(View.INVISIBLE);
                         } else {
-                            play.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.play_arrow_48px));
+                            if (player.isLoading()){
+                                play.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.sync_48px));
+                            }else {
+                                play.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.play_arrow_48px));
+                            }
                         }
                     }
                 });

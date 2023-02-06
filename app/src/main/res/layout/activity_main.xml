@@ -52,7 +52,7 @@
     <com.google.android.exoplayer2.ui.StyledPlayerView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="410dp"
         app:default_artwork="@drawable/artwork"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
