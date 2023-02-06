@@ -23,7 +23,7 @@ jobs:
           
       - name: chmod gradle to be accessible
         if: always()
-        run: chmod +ux ./gradlew
+        run: chmod u+x ./gradlew
         
       - name: Generate AAR and APK files
         if: always()
