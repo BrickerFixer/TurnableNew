@@ -21,6 +21,10 @@ jobs:
           distribution: 'temurin'
           cache: gradle
           
+      - name: chmod gradle to be accessible
+        if: always()
+        run: chmod +ux ./gradlew
+        
       - name: Generate AAR and APK files
         if: always()
         run: ./gradlew assembleDebug
