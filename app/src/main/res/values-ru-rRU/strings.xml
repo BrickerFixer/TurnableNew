@@ -9,4 +9,5 @@
     <string name="noplay">Нет воспроизводимых треков</string>
     <string name="add">Добавить в очередь</string>
     <string name="media_link">Ссылка на медиа файл</string>
+    <string name="storagebt">Добавить из памяти...</string>
 </resources>
