@@ -7,5 +7,5 @@
     <string name="hint">Please, add tracks through any tab at the bottom</string>
     <string name="noplay">No tracks playing</string>
     <string name="add">Add to queue</string>
-    <string name="media_link" />
+    <string name="media_link">Link of media item</string>
 </resources>

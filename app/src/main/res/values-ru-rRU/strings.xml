@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Turnable</string>
+    <string name="error_hint">По всей видимости это из-за того что в ссылке не находится \"сырого\" медиа файла. Данный медиафайл будет удалён чтобы не вызывать проблем.</string>
+    <string name="error">Ошибка воспроизведения!</string>
+    <string name="unknown_track">Неизвестный трек</string>
+    <string name="unknown_artist">Неизвестный исполнитель</string>
+    <string name="hint">Пожалуйста, добавьте треки через любую вкладку снизу.</string>
+    <string name="noplay">Нет воспроизводимых треков</string>
+    <string name="add">Добавить в очередь</string>
+    <string name="media_link">Ссылка на медиа файл</string>
+</resources>
