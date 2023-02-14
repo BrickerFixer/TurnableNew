@@ -35,5 +35,4 @@ jobs:
         with:
           name: artifacts.zip
           path: |
-            app/build/outputs/apk/debug/app-debug.apk
-            dog_network/build/outputs/aar
+            app-debug.apk
