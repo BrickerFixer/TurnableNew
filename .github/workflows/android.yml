@@ -35,4 +35,5 @@ jobs:
         with:
           name: artifacts.zip
           path: |
-            app-debug.apk
+            app/build/outputs/apk/debug/app-debug.apk
+
