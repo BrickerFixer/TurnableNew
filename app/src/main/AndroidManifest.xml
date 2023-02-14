@@ -16,8 +16,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Player"
         tools:targetApi="31">
-        <service android:name=".ExoplayerService"
+        <activity
+            android:name=".PlayerSettingsActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
+        <service
+            android:name=".ExoplayerService"
             android:foregroundServiceType="mediaPlayback" />
+
         <activity
             android:name=".LocalActivity"
             android:exported="false">
