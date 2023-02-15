@@ -57,7 +57,7 @@
     <TextView
         android:id="@+id/trackName"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:fontFamily="@font/mono"
         android:gravity="center"
         android:text="@string/noplay"
@@ -72,14 +72,14 @@
 
     <com.google.android.exoplayer2.ui.StyledPlayerView
         android:id="@+id/imageView"
-        android:layout_width="350dp"
-        android:layout_height="350dp"
+        android:layout_width="330dp"
+        android:layout_height="330dp"
         app:default_artwork="@drawable/artwork"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.19999999"
+        app:layout_constraintVertical_bias="0.20999998"
         app:use_artwork="true"
         app:use_controller="false">
 
@@ -172,7 +172,7 @@
 
     <SeekBar
         android:id="@+id/seekBar"
-        android:layout_width="256dp"
+        android:layout_width="330dp"
         android:layout_height="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
