@@ -4,6 +4,7 @@ import static com.freeui.player.ExoplayerService.player;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 import android.app.ActivityManager;
@@ -15,6 +16,7 @@ import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.graphics.BitmapFactory;
 import android.graphics.Shader;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -44,10 +46,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         setContentView(R.layout.activity_main);
-        BitmapDrawable bitmapDrawable  = new BitmapDrawable(getResources(), BitmapFactory.decodeResource(getResources(), R.drawable.img));
-        ImageView bg = findViewById(R.id.imageView2);
-        bitmapDrawable.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
-        bg.setImageDrawable(bitmapDrawable);
         ImageButton play = findViewById(R.id.playBtn);
         ImageButton next = findViewById(R.id.nextBtn);
         ImageButton prev = findViewById(R.id.prevBtn);
@@ -68,6 +66,10 @@ public class MainActivity extends AppCompatActivity {
         Intent toSettings = new Intent(this, PlayerSettingsActivity.class);
         Intent serviceIntent = new Intent(this, ExoplayerService.class);
         startService(serviceIntent);
+        ConstraintLayout grad = findViewById(R.id.grad);
+        AnimationDrawable anim = (AnimationDrawable) grad.getBackground();
+        anim.setEnterFadeDuration(3000);
+        anim.setExitFadeDuration(3000);
         ServiceConnection sConn = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder binder) {
@@ -168,11 +170,13 @@ public class MainActivity extends AppCompatActivity {
                         if (isPlaying) {
                             play.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.pause_48px));
                             status.setVisibility(View.INVISIBLE);
+                            anim.start();
                         } else {
                             if (player.isLoading()){
                                 play.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.sync_48px));
                             }else {
                                 play.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.play_arrow_48px));
+                                anim.stop();
                             }
                         }
                     }
