@@ -145,20 +145,20 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:background="@drawable/corner_flower_alt"
-        app:tint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/devices_48px" />
+        app:srcCompat="@drawable/cloud_download_48px"
+        app:tint="@color/black" />
 
     <ImageButton
-        android:id="@+id/EQ"
+        android:id="@+id/queue"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:background="@drawable/corner_flower_top_alt"
-        app:tint="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/graphic_eq_48px" />
+        app:srcCompat="@drawable/queue_music_48px"
+        app:tint="@color/black" />
 
     <ImageButton
         android:id="@+id/settings"

@@ -8,24 +8,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
-import android.app.ActivityManager;
-import android.app.Service;
+import android.app.ActivityOptions;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
-import android.graphics.BitmapFactory;
-import android.graphics.Shader;
 import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -33,13 +26,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.Tracks;
 import com.google.android.exoplayer2.ui.StyledPlayerView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -78,12 +69,13 @@ public class MainActivity extends AppCompatActivity {
         ImageButton shuffle = findViewById(R.id.shuffle);
         ImageButton local = findViewById(R.id.local);
         ImageButton net = findViewById(R.id.net);
-        ImageButton eq = findViewById(R.id.EQ);
+        ImageButton queue = findViewById(R.id.queue);
         ImageButton settings = findViewById(R.id.settings);
         ImageView status = findViewById(R.id.status);
         Intent toStorage = new Intent(this, StorageActivity.class);
         Intent toSettings = new Intent(this, PlayerSettingsActivity.class);
         Intent serviceIntent = new Intent(this, ExoplayerService.class);
+        Intent toQueue = new Intent(this, QueueActivity.class);
         startService(serviceIntent);
         ConstraintLayout grad = findViewById(R.id.grad);
         AnimationDrawable anim = (AnimationDrawable) grad.getBackground();
@@ -141,10 +133,10 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(toStorage);
                     }
                 });
-                eq.setOnClickListener(new View.OnClickListener() {
+                queue.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
+                        startActivity(toQueue);
                     }
                 });
                 settings.setOnClickListener(new View.OnClickListener() {

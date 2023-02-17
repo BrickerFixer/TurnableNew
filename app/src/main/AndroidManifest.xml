@@ -17,6 +17,13 @@
         android:theme="@style/Theme.Player"
         tools:targetApi="31">
         <activity
+            android:name=".QueueActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".PlayerSettingsActivity"
             android:exported="false">
             <meta-data
