@@ -29,13 +29,6 @@
             android:foregroundServiceType="mediaPlayback" />
 
         <activity
-            android:name=".LocalActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".StorageActivity"
             android:exported="false">
             <meta-data

@@ -82,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
         ImageButton settings = findViewById(R.id.settings);
         ImageView status = findViewById(R.id.status);
         Intent toStorage = new Intent(this, StorageActivity.class);
-        Intent toLocal = new Intent(this, LocalActivity.class);
         Intent toSettings = new Intent(this, PlayerSettingsActivity.class);
         Intent serviceIntent = new Intent(this, ExoplayerService.class);
         startService(serviceIntent);
