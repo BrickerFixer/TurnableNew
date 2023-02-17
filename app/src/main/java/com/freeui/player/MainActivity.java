@@ -3,6 +3,7 @@ package com.freeui.player;
 import static com.freeui.player.ExoplayerService.player;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
@@ -18,6 +19,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Shader;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -41,6 +43,24 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 public class MainActivity extends AppCompatActivity {
+    public static final int PICK_AUDIO_REQUEST = 1;
+    Uri uri;
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_AUDIO_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
+            Intent serviceIntent = new Intent(this, ExoplayerService.class);
+            uri = data.getData();
+            serviceIntent.putExtra("mediaitem", uri.toString());
+            startService(serviceIntent);
+        }
+    }
+    public void openFileChooser(){
+        Intent intent = new Intent();
+        intent.setType("audio/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, PICK_AUDIO_REQUEST);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                 local.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        startActivity(toLocal);
+                        openFileChooser();
                     }
                 });
                 net.setOnClickListener(new View.OnClickListener() {
