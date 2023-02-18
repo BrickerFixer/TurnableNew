@@ -1,5 +1,7 @@
 package com.freeui.player;
 
+import static com.freeui.player.ExoplayerService.am;
+import static com.freeui.player.ExoplayerService.focusRequest;
 import static com.freeui.player.ExoplayerService.player;
 
 import androidx.annotation.NonNull;
@@ -14,6 +16,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.AnimationDrawable;
+import android.media.AudioFocusRequest;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -198,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
                         if (player.isPlaying() == true) {
                             player.pause();
                         } else {
+                            am.requestAudioFocus(focusRequest);
                             player.play();
                         }
                     }
@@ -240,6 +245,8 @@ public class MainActivity extends AppCompatActivity {
         };
         bindService(serviceIntent, sConn, BIND_AUTO_CREATE);
         ExoPlayer player = ExoplayerService.player;
+        AudioFocusRequest focusRequest = ExoplayerService.focusRequest;
+        AudioManager am = ExoplayerService.am;
     }
 }
 class MyEventListener implements ExoPlayer.Listener {
