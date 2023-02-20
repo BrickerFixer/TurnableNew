@@ -1,10 +1,13 @@
 package com.freeui.player;
 
-public class CustomAdapter {
-}
-/*
-public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+//public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
+/*
     private String[] localDataSet;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -49,5 +52,5 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     @Override
     public int getItemCount() {
         return localDataSet.length;
-    }
-} */
+    }*/
+//}

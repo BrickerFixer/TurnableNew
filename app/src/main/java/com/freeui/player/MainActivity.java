@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onTracksChanged(Tracks tracks) {
                         if (player.getMediaMetadata().title == null) {
-                            trackname.setText(player.getCurrentMediaItem().localConfiguration.uri.toString());
+                            trackname.setText(player.getCurrentMediaItem().localConfiguration.uri.getLastPathSegment());
                         } else {
                             trackname.setText(player.getMediaMetadata().title);
                         }
