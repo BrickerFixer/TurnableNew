@@ -42,7 +42,7 @@ public class ExoplayerService extends Service {
     static AudioManager am;
     private PlayerNotificationManager playerNotificationManager;
     private int notificationId = 2;
-
+    UampNotificationManager notificationManager;
     NotificationListener listener = new NotificationListener() {
         @Override
         public void onNotificationCancelled(int notificationId, boolean dismissedByUser) {
@@ -84,6 +84,7 @@ public class ExoplayerService extends Service {
     public void onDestroy(){
         if (player != null){
             player.release();
+            notificationManager.hideNotification();
         }
     }
     private void initExo(String mediaItemUri){
@@ -113,7 +114,7 @@ public class ExoplayerService extends Service {
             };
             session.setMetadata(provider.getMetadata(player));
             session.setActive(true);
-            UampNotificationManager notificationManager = new UampNotificationManager(this, session.getSessionToken(), listener);
+            notificationManager = new UampNotificationManager(this, session.getSessionToken(), listener);
             notificationManager.showNotificationForPlayer(player);
 
         }else

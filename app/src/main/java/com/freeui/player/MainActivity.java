@@ -10,8 +10,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
+import android.app.ActivityManager;
 import android.app.ActivityOptions;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
@@ -80,7 +82,10 @@ public class MainActivity extends AppCompatActivity {
         Intent toSettings = new Intent(this, PlayerSettingsActivity.class);
         Intent serviceIntent = new Intent(this, ExoplayerService.class);
         Intent toQueue = new Intent(this, QueueActivity.class);
-        startService(serviceIntent);
+        isMyServiceRunning(ExoplayerService.class);
+        if (!isMyServiceRunning(ExoplayerService.class)){
+            startService(serviceIntent);
+        }
         ConstraintLayout grad = findViewById(R.id.grad);
         AnimationDrawable anim = (AnimationDrawable) grad.getBackground();
         anim.setEnterFadeDuration(3000);
@@ -247,6 +252,15 @@ public class MainActivity extends AppCompatActivity {
         ExoPlayer player = ExoplayerService.player;
         AudioFocusRequest focusRequest = ExoplayerService.focusRequest;
         AudioManager am = ExoplayerService.am;
+    }
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 class MyEventListener implements ExoPlayer.Listener {
