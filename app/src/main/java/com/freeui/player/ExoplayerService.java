@@ -14,6 +14,8 @@ import android.media.AudioManager;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.media.MediaMetadataCompat;
+import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.widget.Toast;
 
@@ -103,8 +105,17 @@ public class ExoplayerService extends Service {
             session = new MediaSessionCompat(this, "TurnableService");
             sessionConnector = new MediaSessionConnector(session);
             sessionConnector.setPlayer(player);
+            MediaSessionConnector.MediaMetadataProvider provider = new MediaSessionConnector.MediaMetadataProvider() {
+                @Override
+                public MediaMetadataCompat getMetadata(Player player) {
+                    return null;
+                }
+            };
+            session.setMetadata(provider.getMetadata(player));
+            session.setActive(true);
             UampNotificationManager notificationManager = new UampNotificationManager(this, session.getSessionToken(), listener);
             notificationManager.showNotificationForPlayer(player);
+
         }else
         if (player.getMediaItemCount() == 0){
             playMediaItem(mediaItemUri, player);
@@ -117,8 +128,6 @@ public class ExoplayerService extends Service {
         player.prepare();
         Toast.makeText(getApplicationContext(), "Added track to queue...",
                 Toast.LENGTH_SHORT).show();
-        UampNotificationManager notificationManager = new UampNotificationManager(this, session.getSessionToken(), listener);
-        notificationManager.showNotificationForPlayer(player);
     }
     public void playMediaItem(String mediaItemUri, ExoPlayer player){
         player.addMediaItem(MediaItem.fromUri(mediaItemUri));
@@ -126,8 +135,6 @@ public class ExoplayerService extends Service {
         Toast.makeText(getApplicationContext(), "Added track, starting playback...",
                 Toast.LENGTH_SHORT).show();
         player.play();
-        UampNotificationManager notificationManager = new UampNotificationManager(this, session.getSessionToken(), listener);
-        notificationManager.showNotificationForPlayer(player);
     }
     private void externalDevicesController(){
     }
