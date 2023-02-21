@@ -2,6 +2,7 @@ package com.freeui.player;
 
 
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -16,6 +17,7 @@ import android.os.IBinder;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import com.google.android.exoplayer2.ExoPlayer;
@@ -23,6 +25,7 @@ import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
+import com.google.android.exoplayer2.ui.PlayerNotificationManager.NotificationListener;
 
 import java.util.List;
 import java.util.Map;
@@ -36,7 +39,21 @@ public class ExoplayerService extends Service {
     static AudioAttributes playbackAttributes;
     static AudioManager am;
     private PlayerNotificationManager playerNotificationManager;
-    private int notificationId = 1234;
+    private int notificationId = 2;
+
+    NotificationListener listener = new NotificationListener() {
+        @Override
+        public void onNotificationCancelled(int notificationId, boolean dismissedByUser) {
+            NotificationListener.super.onNotificationCancelled(notificationId, dismissedByUser);
+        }
+
+        @Override
+        public void onNotificationPosted(int notificationId, Notification notification, boolean ongoing) {
+            NotificationListener.super.onNotificationPosted(notificationId, notification, ongoing);
+        }
+    };
+
+
     private PlayerNotificationManager.MediaDescriptionAdapter mediaDescriptionAdapter = new PlayerNotificationManager.MediaDescriptionAdapter() {
         @Override
         public String getCurrentSubText(Player player) {
@@ -45,7 +62,7 @@ public class ExoplayerService extends Service {
 
         @Override
         public String getCurrentContentTitle(Player player) {
-            return "Title";
+            return (String) player.getMediaMetadata().title;
         }
 
         @Override
@@ -114,31 +131,18 @@ public class ExoplayerService extends Service {
             session = new MediaSessionCompat(this, "TurnableService");
             sessionConnector = new MediaSessionConnector(session);
             sessionConnector.setPlayer(player);
-            playerNotificationManager = new PlayerNotificationManager.Builder(this, "My_channel_id", notificationId, mediaDescriptionAdapter, new PlayerNotificationManager.NotificationListener() {
-                @Override
-                public void onNotificationPosted(int notificationId, Notification notification, boolean ongoing) {
-                }
-
-                @Override
-                public void onNotificationCancelled(int notificationId, boolean dismissedByUser) {
-                }
-            }, new PlayerNotificationManager.CustomActionReceiver() {
-                @Override
-                public Map<String, NotificationCompat.Action> createCustomActions(Context context, int instanceId) {
-                    return null;
-                }
-
-                @Override
-                public List<String> getCustomActions(Player player) {
-                    return null;
-                }
-
-                @Override
-                public void onCustomAction(Player player, String action, Intent intent) {
-
-                }
-            }, R.drawable.ic_launcher_foreground, R.drawable.play_arrow_48px, R.drawable.pause_48px, R.drawable.pause_48px, R.drawable.play_circle_48px, R.drawable.play_circle_48px, R.drawable.skip_previous_48px, R.drawable.skip_next_48px);
-            playerNotificationManager.setPlayer(player);
+            playerNotificationManager = new PlayerNotificationManager.Builder(this, notificationId, "com.freeui.player")
+                    .setMediaDescriptionAdapter(mediaDescriptionAdapter)
+                    .setNotificationListener(listener)
+                    .setChannelDescriptionResourceId(R.string.channel_desc)
+                    .setChannelImportance(NotificationManager.IMPORTANCE_HIGH)
+                    .build();
+            playerNotificationManager.setMediaSessionToken(session.getSessionToken());
+            playerNotificationManager.setUseFastForwardAction(false);
+            playerNotificationManager.setUseRewindAction(false);
+            playerNotificationManager.setSmallIcon(R.drawable.ic_launcher_foreground);
+            UampNotificationManager notificationManager = new UampNotificationManager(this, session.getSessionToken(), listener);
+            notificationManager.showNotificationForPlayer(player);
         }else
         if (player.getMediaItemCount() == 0){
             playMediaItem(mediaItemUri, player);
@@ -151,6 +155,8 @@ public class ExoplayerService extends Service {
         player.prepare();
         Toast.makeText(getApplicationContext(), "Added track to queue...",
                 Toast.LENGTH_SHORT).show();
+        UampNotificationManager notificationManager = new UampNotificationManager(this, session.getSessionToken(), listener);
+        notificationManager.showNotificationForPlayer(player);
     }
     public void playMediaItem(String mediaItemUri, ExoPlayer player){
         player.addMediaItem(MediaItem.fromUri(mediaItemUri));
@@ -158,6 +164,8 @@ public class ExoplayerService extends Service {
         Toast.makeText(getApplicationContext(), "Added track, starting playback...",
                 Toast.LENGTH_SHORT).show();
         player.play();
+        UampNotificationManager notificationManager = new UampNotificationManager(this, session.getSessionToken(), listener);
+        notificationManager.showNotificationForPlayer(player);
     }
     private void externalDevicesController(){
     }
