@@ -53,34 +53,6 @@ public class ExoplayerService extends Service {
         }
     };
 
-
-    private PlayerNotificationManager.MediaDescriptionAdapter mediaDescriptionAdapter = new PlayerNotificationManager.MediaDescriptionAdapter() {
-        @Override
-        public String getCurrentSubText(Player player) {
-            return "Sub text";
-        }
-
-        @Override
-        public String getCurrentContentTitle(Player player) {
-            return (String) player.getMediaMetadata().title;
-        }
-
-        @Override
-        public PendingIntent createCurrentContentIntent(Player player) {
-            return null;
-        }
-
-        @Override
-        public String getCurrentContentText(Player player) {
-            return "ContentText";
-        }
-
-        @Override
-        public Bitmap getCurrentLargeIcon(Player player, PlayerNotificationManager.BitmapCallback callback) {
-            return null;
-        }
-    };
-
     @Override
     public IBinder onBind(Intent intent) {
         return binder;
@@ -131,16 +103,6 @@ public class ExoplayerService extends Service {
             session = new MediaSessionCompat(this, "TurnableService");
             sessionConnector = new MediaSessionConnector(session);
             sessionConnector.setPlayer(player);
-            playerNotificationManager = new PlayerNotificationManager.Builder(this, notificationId, "com.freeui.player")
-                    .setMediaDescriptionAdapter(mediaDescriptionAdapter)
-                    .setNotificationListener(listener)
-                    .setChannelDescriptionResourceId(R.string.channel_desc)
-                    .setChannelImportance(NotificationManager.IMPORTANCE_HIGH)
-                    .build();
-            playerNotificationManager.setMediaSessionToken(session.getSessionToken());
-            playerNotificationManager.setUseFastForwardAction(false);
-            playerNotificationManager.setUseRewindAction(false);
-            playerNotificationManager.setSmallIcon(R.drawable.ic_launcher_foreground);
             UampNotificationManager notificationManager = new UampNotificationManager(this, session.getSessionToken(), listener);
             notificationManager.showNotificationForPlayer(player);
         }else
