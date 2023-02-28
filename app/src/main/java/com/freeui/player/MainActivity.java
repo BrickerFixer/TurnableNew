@@ -11,7 +11,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 import android.app.ActivityManager;
-import android.app.ActivityOptions;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -82,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
         Intent toSettings = new Intent(this, PlayerSettingsActivity.class);
         Intent serviceIntent = new Intent(this, ExoplayerService.class);
         Intent toQueue = new Intent(this, QueueActivity.class);
-        isMyServiceRunning(ExoplayerService.class);
         if (!isMyServiceRunning(ExoplayerService.class)){
             startService(serviceIntent);
         }

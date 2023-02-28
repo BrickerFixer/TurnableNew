@@ -2,12 +2,9 @@ package com.freeui.player;
 
 
 import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.media.AudioAttributes;
 import android.media.AudioFocusRequest;
 import android.media.AudioManager;
@@ -15,22 +12,15 @@ import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.media.MediaMetadataCompat;
-import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
 
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
-import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager.NotificationListener;
-
-import java.util.List;
-import java.util.Map;
 
 public class ExoplayerService extends Service {
     static ExoPlayer player;
@@ -40,9 +30,9 @@ public class ExoplayerService extends Service {
     static AudioFocusRequest focusRequest;
     static AudioAttributes playbackAttributes;
     static AudioManager am;
-    private PlayerNotificationManager playerNotificationManager;
-    private int notificationId = 2;
     UampNotificationManager notificationManager;
+    TrackDatabase tdb = App.getInstance().getDatabase();
+    TrackDao dao = tdb.trackDao();
     NotificationListener listener = new NotificationListener() {
         @Override
         public void onNotificationCancelled(int notificationId, boolean dismissedByUser) {
@@ -116,7 +106,6 @@ public class ExoplayerService extends Service {
             session.setActive(true);
             notificationManager = new UampNotificationManager(this, session.getSessionToken(), listener);
             notificationManager.showNotificationForPlayer(player);
-
         }else
         if (player.getMediaItemCount() == 0){
             playMediaItem(mediaItemUri, player);
@@ -126,12 +115,16 @@ public class ExoplayerService extends Service {
     }
     public void  addMediaItem(String mediaItemUri, ExoPlayer player){
         player.addMediaItem(MediaItem.fromUri(mediaItemUri));
+        Track tr = new Track(null, mediaItemUri);
+        dao.insert(tr);
         player.prepare();
         Toast.makeText(getApplicationContext(), "Added track to queue...",
                 Toast.LENGTH_SHORT).show();
     }
     public void playMediaItem(String mediaItemUri, ExoPlayer player){
         player.addMediaItem(MediaItem.fromUri(mediaItemUri));
+        Track tr = new Track(null, mediaItemUri);
+        dao.insert(tr);
         player.prepare();
         Toast.makeText(getApplicationContext(), "Added track, starting playback...",
                 Toast.LENGTH_SHORT).show();

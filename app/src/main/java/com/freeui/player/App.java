@@ -14,7 +14,8 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        database = Room.databaseBuilder(this, TrackDatabase.class, "database")
+        database = Room.databaseBuilder(getApplicationContext(), TrackDatabase.class, "trackdatabase")
+                .allowMainThreadQueries()
                 .build();
     }
 
