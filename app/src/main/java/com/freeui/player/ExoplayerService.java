@@ -34,8 +34,8 @@ public class ExoplayerService extends Service {
     static AudioAttributes playbackAttributes;
     static AudioManager am;
     UampNotificationManager notificationManager;
-    TrackDatabase tdb = App.getInstance().getDatabase();
-    TrackDao dao = tdb.trackDao();
+    static TrackDatabase tdb = App.getInstance().getDatabase();
+    static TrackDao dao = tdb.trackDao();
     NotificationListener listener = new NotificationListener() {
         @Override
         public void onNotificationCancelled(int notificationId, boolean dismissedByUser) {
@@ -116,7 +116,6 @@ public class ExoplayerService extends Service {
                     player.addMediaItem(MediaItem.fromUri(Objects.requireNonNull(dao.getById(i)).getTrackuri()));
                 }
                 player.prepare();
-                player.play();
             }
         }else
         if (player.getMediaItemCount() == 0){

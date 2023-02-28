@@ -35,6 +35,7 @@ import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.Tracks;
+import com.google.android.exoplayer2.metadata.Metadata;
 import com.google.android.exoplayer2.ui.StyledPlayerView;
 
 
@@ -111,6 +112,8 @@ public class MainActivity extends AppCompatActivity {
                         artist.setText(R.string.error_hint);
                         Toast.makeText(getApplicationContext(), error.getLocalizedMessage(),
                                 Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "removed everything from playlist database...", Toast.LENGTH_SHORT);
+                        ExoplayerService.dao.deleteAll();
                         player.removeMediaItem(player.getCurrentMediaItemIndex());
                     }
                 });
@@ -169,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
                 });
                 player.addListener(new Player.Listener() {
                     @Override
-                    public void onTracksChanged(Tracks tracks) {
+                    public void onMetadata(Metadata metadata) {
                         if (player.getMediaMetadata().title == null) {
                             trackname.setText(player.getCurrentMediaItem().localConfiguration.uri.getLastPathSegment());
                         } else {
@@ -180,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             artist.setText(player.getMediaMetadata().artist);
                         }
+                        status.setVisibility(View.INVISIBLE);
                     }
                 });
                 player.addListener(new Player.Listener() {
@@ -187,7 +191,6 @@ public class MainActivity extends AppCompatActivity {
                     public void onIsPlayingChanged(boolean isPlaying) {
                         if (isPlaying) {
                             play.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.pause_48px));
-                            status.setVisibility(View.INVISIBLE);
                             anim.start();
                         } else {
                             if (player.isLoading()){
