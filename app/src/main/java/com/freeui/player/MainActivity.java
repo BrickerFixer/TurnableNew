@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.LENGTH_LONG).show();
                         player.removeMediaItem(player.getCurrentMediaItemIndex());
                         dao.deleteAll();
-                        Toast.makeText(getApplicationContext(), "Removed everything from presistent db!!!",
+                        Toast.makeText(getApplicationContext(), R.string.err_db_tip,
                                 Toast.LENGTH_LONG).show();
                     }
                 });

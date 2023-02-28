@@ -10,4 +10,10 @@
     <string name="add">Добавить в очередь</string>
     <string name="media_link">Ссылка на медиа файл</string>
     <string name="storagebt">Добавить из памяти...</string>
+    <string name="channel_name">Плеер в шторке</string>
+    <string name="channel_desc">Отображает уведомление плеера в шторке уведомлений</string>
+    <string name="resume_tip">Возобновление воспроизведения... (БЕТА! РАБОТАЕТ ТОЛЬКО С ОНЛАЙН ПОТОКАМИ!)</string>
+    <string name="added_tip">Добавление трека в очередь...</string>
+    <string name="starting_tip">Трек добавлен, запуск воспроизведения...</string>
+    <string name="err_db_tip">Удалил всё из базы данных!!!</string>
 </resources>

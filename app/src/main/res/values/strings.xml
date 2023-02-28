@@ -9,6 +9,10 @@
     <string name="add">Add to queue</string>
     <string name="media_link">Link of media item</string>
     <string name="storagebt">Add from storage...</string>
-    <string name="channel_name">player notification</string>
-    <string name="channel_desc">shows a miniature player in a notification shade</string>
+    <string name="channel_name">Player notification</string>
+    <string name="channel_desc">Shows a miniature player in a notification shade</string>
+    <string name="resume_tip">Resuming playback... (BETA! ONLY WORKS WITH WEB URIS!)</string>
+    <string name="added_tip">Added track to queue...</string>
+    <string name="starting_tip">Added track, starting playback...</string>
+    <string name="err_db_tip">Removed everything from presistent db!!!</string>
 </resources>

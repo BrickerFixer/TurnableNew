@@ -62,6 +62,8 @@ public class ExoplayerService extends Service {
                 player.pause();
             } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
                 player.pause();
+            } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN_TRANSIENT){
+                player.play();
             }
         }
     };
@@ -110,7 +112,7 @@ public class ExoplayerService extends Service {
             notificationManager = new UampNotificationManager(this, session.getSessionToken(), listener);
             notificationManager.showNotificationForPlayer(player);
             if (dao.getAll().size() > 0){
-                Toast.makeText(getApplicationContext(), "Resuming playback... (BETA! ONLY WORKS WITH WEB URIS!)",
+                Toast.makeText(getApplicationContext(), R.string.resume_tip,
                         Toast.LENGTH_SHORT).show();
                 for (int i = 1; i <= dao.getAll().size(); i++){
                     player.addMediaItem(MediaItem.fromUri(Objects.requireNonNull(dao.getById(i)).getTrackuri()));
@@ -129,7 +131,7 @@ public class ExoplayerService extends Service {
         Track tr = new Track(null, mediaItemUri);
         dao.insert(tr);
         player.prepare();
-        Toast.makeText(getApplicationContext(), "Added track to queue...",
+        Toast.makeText(getApplicationContext(), R.string.added_tip,
                 Toast.LENGTH_SHORT).show();
     }
     public void playMediaItem(String mediaItemUri, ExoPlayer player){
@@ -137,7 +139,7 @@ public class ExoplayerService extends Service {
         Track tr = new Track(null, mediaItemUri);
         dao.insert(tr);
         player.prepare();
-        Toast.makeText(getApplicationContext(), "Added track, starting playback...",
+        Toast.makeText(getApplicationContext(), R.string.starting_tip,
                 Toast.LENGTH_SHORT).show();
         player.play();
     }
