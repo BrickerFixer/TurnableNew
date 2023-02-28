@@ -1,6 +1,7 @@
 package com.freeui.player;
 
 import static com.freeui.player.ExoplayerService.am;
+import static com.freeui.player.ExoplayerService.dao;
 import static com.freeui.player.ExoplayerService.focusRequest;
 import static com.freeui.player.ExoplayerService.player;
 
@@ -112,9 +113,10 @@ public class MainActivity extends AppCompatActivity {
                         artist.setText(R.string.error_hint);
                         Toast.makeText(getApplicationContext(), error.getLocalizedMessage(),
                                 Toast.LENGTH_LONG).show();
-                        Toast.makeText(getApplicationContext(), "removed everything from playlist database...", Toast.LENGTH_SHORT);
-                        ExoplayerService.dao.deleteAll();
                         player.removeMediaItem(player.getCurrentMediaItemIndex());
+                        dao.deleteAll();
+                        Toast.makeText(getApplicationContext(), "Removed everything from presistent db!!!",
+                                Toast.LENGTH_LONG).show();
                     }
                 });
                 player.addListener(new MyEventListener(time, player, progress));
@@ -172,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
                 });
                 player.addListener(new Player.Listener() {
                     @Override
-                    public void onMetadata(Metadata metadata) {
+                    public void onTracksChanged(Tracks tracks) {
                         if (player.getMediaMetadata().title == null) {
                             trackname.setText(player.getCurrentMediaItem().localConfiguration.uri.getLastPathSegment());
                         } else {
