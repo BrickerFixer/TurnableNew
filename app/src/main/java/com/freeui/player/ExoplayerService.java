@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.widget.Toast;
 
 
@@ -21,6 +22,8 @@ import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager.NotificationListener;
+
+import java.util.Objects;
 
 public class ExoplayerService extends Service {
     static ExoPlayer player;
@@ -106,6 +109,15 @@ public class ExoplayerService extends Service {
             session.setActive(true);
             notificationManager = new UampNotificationManager(this, session.getSessionToken(), listener);
             notificationManager.showNotificationForPlayer(player);
+            if (dao.getAll().size() > 0){
+                Toast.makeText(getApplicationContext(), "Resuming playback... (BETA! ONLY WORKS WITH WEB URIS!)",
+                        Toast.LENGTH_SHORT).show();
+                for (int i = 1; i <= dao.getAll().size(); i++){
+                    player.addMediaItem(MediaItem.fromUri(Objects.requireNonNull(dao.getById(i)).getTrackuri()));
+                }
+                player.prepare();
+                player.play();
+            }
         }else
         if (player.getMediaItemCount() == 0){
             playMediaItem(mediaItemUri, player);
