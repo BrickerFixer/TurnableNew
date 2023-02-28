@@ -195,12 +195,8 @@ public class MainActivity extends AppCompatActivity {
                             play.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.pause_48px));
                             anim.start();
                         } else {
-                            if (player.isLoading()){
-                                play.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.sync_48px));
-                            }else {
                                 play.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.play_arrow_48px));
                                 anim.stop();
-                            }
                         }
                     }
                 });
