@@ -1,5 +1,5 @@
 # Turnable Rewrite
-![Screenshot](изображение.png)
+![Screenshot](header.png)
 ## DISCLAIMER:
 Warning! App contains a lot of trash code and is still in development!
 Please, understand that this is my first ever usable app made, thanks!
