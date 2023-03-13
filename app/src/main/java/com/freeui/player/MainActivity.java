@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     Uri uri;
     ServiceConnection sConn;
     Intent serviceIntent = App.serviceIntent;
+    private boolean bound;
+
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_AUDIO_REQUEST && resultCode == RESULT_OK
@@ -60,6 +62,11 @@ public class MainActivity extends AppCompatActivity {
         intent.setType("audio/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, PICK_AUDIO_REQUEST);
+    }
+    @Override
+    protected void onStart() {
+        bindService(serviceIntent, sConn, BIND_AUTO_CREATE);
+        super.onStart();
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,9 +91,6 @@ public class MainActivity extends AppCompatActivity {
         Intent toStorage = new Intent(this, StorageActivity.class);
         Intent toSettings = new Intent(this, PlayerSettingsActivity.class);
         Intent toQueue = new Intent(this, QueueActivity.class);
-        if (!isMyServiceRunning(ExoplayerService.class)){
-            startService(serviceIntent);
-        }
         ConstraintLayout grad = findViewById(R.id.grad);
         AnimationDrawable anim = (AnimationDrawable) grad.getBackground();
         anim.setEnterFadeDuration(3000);
@@ -95,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onServiceConnected(ComponentName name, IBinder binder) {
                 ExoplayerService exoService = ((ExoplayerService.PlayerBinder)binder).getService();
+                bound = true;
                 player.addListener(new Player.Listener() {
                     @Override
                     public void onIsLoadingChanged(boolean isLoading) {
@@ -237,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
                         if(player.getMediaItemCount() != 0) {
-                            player.seekTo((progress.getProgress() * (int) player.getDuration()) / 100);
+                            player.seekTo((progress.getProgress() * (long) player.getDuration()) / 100);
                         }
                     }
                 });
@@ -245,6 +250,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onServiceDisconnected(ComponentName componentName) {
+                bound = false;
 
             }
         };
@@ -264,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
     }
     @Override
     public void onStop(){
-        //getApplicationContext().unbindService(sConn);
+        unbindService(sConn);
         super.onStop();
     }
     @Override

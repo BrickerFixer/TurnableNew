@@ -118,6 +118,7 @@ public class ExoplayerService extends Service {
                     player.addMediaItem(MediaItem.fromUri(Objects.requireNonNull(dao.getById(i)).getTrackuri()));
                 }
                 player.prepare();
+                player.play();
             }
         }else
         if (player.getMediaItemCount() == 0){
