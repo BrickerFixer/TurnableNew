@@ -14,5 +14,5 @@
     <string name="resume_tip">Resuming playback... (BETA! ONLY WORKS WITH WEB URIS!)</string>
     <string name="added_tip">Added track to queue...</string>
     <string name="starting_tip">Added track, starting playback...</string>
-    <string name="err_db_tip">Removed everything from presistent db!!!</string>
+    <string name="err_db_tip">Removed everything from persistent db!!!</string>
 </resources>

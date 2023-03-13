@@ -43,6 +43,8 @@ import com.google.android.exoplayer2.ui.StyledPlayerView;
 public class MainActivity extends AppCompatActivity {
     public static final int PICK_AUDIO_REQUEST = 1;
     Uri uri;
+    ServiceConnection sConn;
+    Intent serviceIntent = App.serviceIntent;
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_AUDIO_REQUEST && resultCode == RESULT_OK
@@ -81,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
         ImageView status = findViewById(R.id.status);
         Intent toStorage = new Intent(this, StorageActivity.class);
         Intent toSettings = new Intent(this, PlayerSettingsActivity.class);
-        Intent serviceIntent = new Intent(this, ExoplayerService.class);
         Intent toQueue = new Intent(this, QueueActivity.class);
         if (!isMyServiceRunning(ExoplayerService.class)){
             startService(serviceIntent);
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         AnimationDrawable anim = (AnimationDrawable) grad.getBackground();
         anim.setEnterFadeDuration(3000);
         anim.setExitFadeDuration(3000);
-        ServiceConnection sConn = new ServiceConnection() {
+        sConn = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder binder) {
                 ExoplayerService exoService = ((ExoplayerService.PlayerBinder)binder).getService();
@@ -260,6 +261,16 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+    @Override
+    public void onStop(){
+        //getApplicationContext().unbindService(sConn);
+        super.onStop();
+    }
+    @Override
+    public void onDestroy() {
+        stopService(serviceIntent);
+        super.onDestroy();
     }
 }
 class MyEventListener implements ExoPlayer.Listener {
