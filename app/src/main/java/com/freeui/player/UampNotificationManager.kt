@@ -89,10 +89,10 @@ internal class UampNotificationManager(
             controller.sessionActivity
 
         override fun getCurrentContentText(player: Player) =
-            controller.metadata.description.subtitle.toString()
+            player.mediaMetadata.artist.toString()
 
         override fun getCurrentContentTitle(player: Player) =
-            controller.metadata.description.title.toString()
+            player.mediaMetadata.title.toString()
 
         override fun getCurrentLargeIcon(
             player: Player,

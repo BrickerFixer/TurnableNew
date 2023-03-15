@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.MediaMetadata;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager.NotificationListener;
@@ -107,10 +108,15 @@ public class ExoplayerService extends Service {
                     return null;
                 }
             };
-            session.setMetadata(provider.getMetadata(player));
             session.setActive(true);
             notificationManager = new UampNotificationManager(this, session.getSessionToken(), listener);
             notificationManager.showNotificationForPlayer(player);
+            player.addListener(new Player.Listener() {
+                @Override
+                public void onMediaMetadataChanged(MediaMetadata mediaMetadata) {
+                    //session.setMetadata(provider.getMetadata(player));
+                }
+            });
             if (dao.getAll().size() > 0){
                 Toast.makeText(getApplicationContext(), R.string.resume_tip,
                         Toast.LENGTH_SHORT).show();

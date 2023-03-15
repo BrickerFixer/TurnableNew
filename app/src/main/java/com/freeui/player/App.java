@@ -25,7 +25,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         serviceIntent = new Intent(this, ExoplayerService.class);
-        startForegroundService(serviceIntent);
+        startService(serviceIntent);
         instance = this;
         database = Room.databaseBuilder(getApplicationContext(), TrackDatabase.class, "trackdatabase")
                 .allowMainThreadQueries()
