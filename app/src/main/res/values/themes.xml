@@ -1,15 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.Player" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- enable window content transitions -->
-        <item name="android:windowActivityTransitions">true</item>
-        <!-- specify enter and exit transitions -->
-        <item name="android:windowEnterTransition">@transition/ripple</item>
-        <item name="android:windowExitTransition">@transition/ripple</item>
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
