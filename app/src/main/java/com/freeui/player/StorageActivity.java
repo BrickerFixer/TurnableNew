@@ -23,7 +23,7 @@ public class StorageActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String trackurl = mediaitemtf.getText().toString();
                 serviceIntent.putExtra("mediaitem", trackurl);
-                startService(serviceIntent);
+                startForegroundService(serviceIntent);
             }
         });
     }

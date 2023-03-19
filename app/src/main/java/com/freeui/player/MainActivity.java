@@ -56,13 +56,18 @@ public class MainActivity extends AppCompatActivity {
             Intent serviceIntent = new Intent(this, ExoplayerService.class);
             uri = data.getData();
             serviceIntent.putExtra("mediaitem", uri.toString());
-            startService(serviceIntent);
+            startForegroundService(serviceIntent);
         }
     }
     public void openFileChooser(){
         Intent intent = new Intent();
         intent.setType("audio/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, PICK_AUDIO_REQUEST);
+    }
+    public void openFolderChooser(){
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_OPEN_DOCUMENT_TREE);
         startActivityForResult(intent, PICK_AUDIO_REQUEST);
     }
     @Override
@@ -158,6 +163,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         openFileChooser();
+                    }
+                });
+                local.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        openFolderChooser();
+                        return false;
                     }
                 });
                 net.setOnClickListener(new View.OnClickListener() {

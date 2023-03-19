@@ -29,7 +29,7 @@ public class App extends Application {
                 .allowMainThreadQueries()
                 .build();
         serviceIntent = new Intent(this, ExoplayerService.class);
-        startForegroundService(serviceIntent);
+        startService(serviceIntent);
     }
 
     public static App getInstance() {

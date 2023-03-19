@@ -24,7 +24,7 @@ public class QueueActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String trackurl = "RMx63757272656e74";
                 serviceIntent.putExtra("mediaitem", trackurl);
-                startService(serviceIntent);
+                startForegroundService(serviceIntent);
             }
         });
     }
