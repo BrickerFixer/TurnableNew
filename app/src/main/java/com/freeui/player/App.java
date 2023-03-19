@@ -24,12 +24,12 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        serviceIntent = new Intent(this, ExoplayerService.class);
-        startForegroundService(serviceIntent);
         instance = this;
         database = Room.databaseBuilder(getApplicationContext(), TrackDatabase.class, "trackdatabase")
                 .allowMainThreadQueries()
                 .build();
+        serviceIntent = new Intent(this, ExoplayerService.class);
+        startForegroundService(serviceIntent);
     }
 
     public static App getInstance() {

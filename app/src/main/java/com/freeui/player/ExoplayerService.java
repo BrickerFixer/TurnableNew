@@ -125,12 +125,7 @@ public class ExoplayerService extends Service {
                 Toast.makeText(getApplicationContext(), R.string.resume_tip,
                         Toast.LENGTH_SHORT).show();
                 for (int i = 1; i <= dao.getAll().size(); i++) {
-                    try{
-                        player.addMediaItem(MediaItem.fromUri(Objects.requireNonNull(dao.getById(i)).getTrackuri()));
-                    }catch (Exception e){
-                        Toast.makeText(this, R.string.NullPointerErr, Toast.LENGTH_LONG);
-                        e.printStackTrace();
-                    }
+                        player.addMediaItem(MediaItem.fromUri(dao.getById(i).getTrackuri()));
                 }
                 player.prepare();
                 player.play();
@@ -144,6 +139,7 @@ public class ExoplayerService extends Service {
             notificationManager.setPlayer(player);
             notificationManager.setMediaSessionToken(session.getSessionToken());
             notificationManager.setSmallIcon(R.drawable.ic_launcher_foreground);
+            notificationManager.setUseNextAction(true);
             PositionLiveData liveData = new PositionLiveData(player);
         } else if (player.getMediaItemCount() == 0) {
             playMediaItem(mediaItemUri, player);
