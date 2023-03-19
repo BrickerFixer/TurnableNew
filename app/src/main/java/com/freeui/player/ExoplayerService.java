@@ -70,6 +70,7 @@ public class ExoplayerService extends Service {
     public int onStartCommand(Intent intent, int flags, int startid) {
         String mediaItemUri = intent.getStringExtra("mediaitem");
         initExo(mediaItemUri);
+        PositionLiveData liveData = new PositionLiveData(player);
         return super.onStartCommand(intent, flags, startid);
     }
 
@@ -131,7 +132,6 @@ public class ExoplayerService extends Service {
                 player.play();
             }
             notificationManager = new PlayerNotificationManager.Builder(this, NOW_PLAYING_NOTIFICATION_ID, NOW_PLAYING_CHANNEL_ID)
-                    .setMediaDescriptionAdapter(new DescriptionAdapter(mediaController))
                     .setNotificationListener(notificationListener)
                     .setChannelNameResourceId(R.string.channel_name)
                     .setChannelDescriptionResourceId(R.string.channel_desc)
@@ -139,32 +139,48 @@ public class ExoplayerService extends Service {
             notificationManager.setPlayer(player);
             notificationManager.setMediaSessionToken(session.getSessionToken());
             notificationManager.setSmallIcon(R.drawable.ic_launcher_foreground);
-            notificationManager.setUseNextAction(true);
-            PositionLiveData liveData = new PositionLiveData(player);
-        } else if (player.getMediaItemCount() == 0) {
+        } else if (mediaItemUri == "RMx63757272656e74"){
+            rmMediaItem(player);
+        } else if (player.getMediaItemCount() == 0 && mediaItemUri != "RMx63757272656e74") {
             playMediaItem(mediaItemUri, player);
-        } else {
+        } else if (player.getMediaItemCount() > 0 && mediaItemUri != "RMx63757272656e74"){
             addMediaItem(mediaItemUri, player);
         }
     }
 
+    public void rmMediaItem(ExoPlayer player) {
+        if (player.getMediaItemCount() == 0){
+            Toast.makeText(getApplicationContext(), "No MediaItems to remove!", Toast.LENGTH_LONG).show();
+        } else if (player.getMediaItemCount() > player.getCurrentMediaItemIndex()){
+            player.removeMediaItem(player.getCurrentMediaItemIndex());
+            player.seekToNextMediaItem();
+        }else if (player.getMediaItemCount() <= player.getCurrentMediaItemIndex()){
+            player.removeMediaItem(player.getCurrentMediaItemIndex());
+            player.seekToPreviousMediaItem();
+        }
+    }
+
     public void addMediaItem(String mediaItemUri, ExoPlayer player) {
-        player.addMediaItem(MediaItem.fromUri(mediaItemUri));
-        Track tr = new Track(null, mediaItemUri);
-        dao.insert(tr);
-        player.prepare();
-        Toast.makeText(getApplicationContext(), R.string.added_tip,
-                Toast.LENGTH_SHORT).show();
+        if (mediaItemUri != "RMx63757272656e74") {
+            player.addMediaItem(MediaItem.fromUri(mediaItemUri));
+            Track tr = new Track(null, mediaItemUri);
+            dao.insert(tr);
+            player.prepare();
+            Toast.makeText(getApplicationContext(), R.string.added_tip,
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void playMediaItem(String mediaItemUri, ExoPlayer player) {
-        player.addMediaItem(MediaItem.fromUri(mediaItemUri));
-        Track tr = new Track(null, mediaItemUri);
-        dao.insert(tr);
-        player.prepare();
-        Toast.makeText(getApplicationContext(), R.string.starting_tip,
-                Toast.LENGTH_SHORT).show();
-        player.play();
+        if (mediaItemUri != "RMx63757272656e74") {
+            player.addMediaItem(MediaItem.fromUri(mediaItemUri));
+            Track tr = new Track(null, mediaItemUri);
+            dao.insert(tr);
+            player.prepare();
+            Toast.makeText(getApplicationContext(), R.string.starting_tip,
+                    Toast.LENGTH_SHORT).show();
+            player.play();
+        }
     }
 
     private void externalDevicesController() {
@@ -173,50 +189,6 @@ public class ExoplayerService extends Service {
     class PlayerBinder extends Binder {
         ExoplayerService getService() {
             return ExoplayerService.this;
-        }
-    }
-
-    class DescriptionAdapter implements PlayerNotificationManager.MediaDescriptionAdapter {
-
-        private final MediaControllerCompat controller;
-
-        private DescriptionAdapter(MediaControllerCompat controller) {
-            this.controller = controller;
-        }
-
-        @Override
-        public CharSequence getCurrentContentTitle(Player player) {
-            if (player.getMediaItemCount() != 0 && player != null && player.getMediaMetadata().title != null || player.getMediaMetadata().title != ""){
-                return player.getMediaMetadata().title;
-            }
-            return getString(R.string.unknown_track);
-        }
-
-        @Nullable
-        @Override
-        public PendingIntent createCurrentContentIntent(Player player) {
-            return controller.getSessionActivity();
-        }
-
-        @Nullable
-        @Override
-        public CharSequence getCurrentContentText(Player player) {
-            if (player.getMediaItemCount() != 0 && player != null && player.getMediaMetadata().artist != null || player.getMediaMetadata().title != ""){
-                return player.getMediaMetadata().artist;
-            }
-            return getString(R.string.unknown_artist);
-        }
-
-        @Nullable
-        @Override
-        public CharSequence getCurrentSubText(Player player) {
-            return PlayerNotificationManager.MediaDescriptionAdapter.super.getCurrentSubText(player);
-        }
-
-        @Nullable
-        @Override
-        public Bitmap getCurrentLargeIcon(Player player, PlayerNotificationManager.BitmapCallback callback) {
-            return null;
         }
     }
 }

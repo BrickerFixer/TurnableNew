@@ -98,15 +98,15 @@ public class MainActivity extends AppCompatActivity {
         anim.setEnterFadeDuration(3000);
         anim.setExitFadeDuration(3000);
         PositionLiveData positionLiveData = new PositionLiveData(player);
-        positionLiveData.observe(this, new Observer<Integer>() {
+        positionLiveData.observe(this, new Observer<Long>() {
             @Override
-            public void onChanged(Integer position) {
-                int timeMs = (int) player.getDuration();
-                int totalSeconds = timeMs / 1000;
-                int totalMinutes = totalSeconds / 60;
-                int playingMs = (int) position;
-                int playingSeconds = playingMs / 1000;
-                int playingMinutes = playingSeconds / 60;
+            public void onChanged(Long position) {
+                long timeMs = player.getDuration();
+                long totalSeconds = timeMs / 1000;
+                long totalMinutes = totalSeconds / 60;
+                long playingMs = player.getCurrentPosition();
+                long playingSeconds = playingMs / 1000;
+                long playingMinutes = playingSeconds / 60;
                 time.setText(String.format("%02d", playingMinutes % 60) + ":" + String.format("%02d", playingSeconds % 60) + "/" + String.format("%02d", totalMinutes % 60) + ":" + String.format("%02d", totalSeconds % 60));
                 progress.setProgress((int) ((player.getCurrentPosition() * 100) / player.getDuration()));
             }
