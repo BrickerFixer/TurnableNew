@@ -57,12 +57,8 @@ public class ExoplayerService extends Service {
         public void onAudioFocusChange(int focusChange) {
             if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
                 player.play();
-            } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT) {
-                player.pause();
             } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
                 player.pause();
-            } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN_TRANSIENT) {
-                player.play();
             }
         }
     };
@@ -113,11 +109,13 @@ public class ExoplayerService extends Service {
             NotificationListener notificationListener = new NotificationListener() {
                 @Override
                 public void onNotificationCancelled(int notificationId, boolean dismissedByUser) {
+                    stopForeground(true);
                     NotificationListener.super.onNotificationCancelled(notificationId, dismissedByUser);
                 }
 
                 @Override
                 public void onNotificationPosted(int notificationId, Notification notification, boolean ongoing) {
+                    startForeground(notificationId, notification);
                     NotificationListener.super.onNotificationPosted(notificationId, notification, ongoing);
                 }
             };
@@ -146,6 +144,7 @@ public class ExoplayerService extends Service {
             notificationManager.setPlayer(player);
             notificationManager.setMediaSessionToken(session.getSessionToken());
             notificationManager.setSmallIcon(R.drawable.ic_launcher_foreground);
+            PositionLiveData liveData = new PositionLiveData(player);
         } else if (player.getMediaItemCount() == 0) {
             playMediaItem(mediaItemUri, player);
         } else {

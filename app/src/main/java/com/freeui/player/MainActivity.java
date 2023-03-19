@@ -10,6 +10,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 
 import android.app.ActivityManager;
 import android.content.ComponentName;
@@ -95,6 +97,20 @@ public class MainActivity extends AppCompatActivity {
         AnimationDrawable anim = (AnimationDrawable) grad.getBackground();
         anim.setEnterFadeDuration(3000);
         anim.setExitFadeDuration(3000);
+        PositionLiveData positionLiveData = new PositionLiveData(player);
+        positionLiveData.observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer position) {
+                int timeMs = (int) player.getDuration();
+                int totalSeconds = timeMs / 1000;
+                int totalMinutes = totalSeconds / 60;
+                int playingMs = (int) position;
+                int playingSeconds = playingMs / 1000;
+                int playingMinutes = playingSeconds / 60;
+                time.setText(String.format("%02d", playingMinutes % 60) + ":" + String.format("%02d", playingSeconds % 60) + "/" + String.format("%02d", totalMinutes % 60) + ":" + String.format("%02d", totalSeconds % 60));
+                progress.setProgress((int) ((player.getCurrentPosition() * 100) / player.getDuration()));
+            }
+        });
         sConn = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder binder) {
@@ -125,7 +141,6 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.LENGTH_LONG).show();
                     }
                 });
-                player.addListener(new MyEventListener(time, player, progress));
                 artwork.setPlayer(player);
                 shuffle.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -277,36 +292,5 @@ public class MainActivity extends AppCompatActivity {
     public void onDestroy() {
         stopService(serviceIntent);
         super.onDestroy();
-    }
-}
-class MyEventListener implements ExoPlayer.Listener {
-    private TextView mTextView;
-    private ExoPlayer exoPlayer;
-    private SeekBar mSeekBar;
-
-
-    MyEventListener(TextView textView, ExoPlayer exoPlayer, SeekBar seekBar) {
-        mTextView = textView;
-        this.exoPlayer = exoPlayer;
-        mSeekBar = seekBar;
-    }
-    private final Handler mHandler = new Handler();
-    private final Runnable mUpdateTimeTask = new Runnable() {
-        public void run() {
-            int timeMs = (int) exoPlayer.getDuration();
-            int totalSeconds = timeMs / 1000;
-            int totalMinutes = totalSeconds / 60;
-            int playingMs = (int) exoPlayer.getCurrentPosition();
-            int playingSeconds = playingMs / 1000;
-            int playingMinutes = playingSeconds / 60;
-            mTextView.setText(String.format("%02d", playingMinutes % 60) + ":" + String.format("%02d", playingSeconds % 60) + "/" + String.format("%02d", totalMinutes % 60) + ":" + String.format("%02d", totalSeconds % 60));
-            mSeekBar.setProgress((int) ((exoPlayer.getCurrentPosition() * 100) / exoPlayer.getDuration()));
-            mHandler.postDelayed(this, 1000);
-        }
-    };
-    @Override
-    public void onTimelineChanged(Timeline timeline, int reason) {
-        // update the TextView with the current position
-        mHandler.post(mUpdateTimeTask);
     }
 }
