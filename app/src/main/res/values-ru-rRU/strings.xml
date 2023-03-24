@@ -15,5 +15,7 @@
     <string name="resume_tip">Возобновление воспроизведения... (БЕТА! РАБОТАЕТ ТОЛЬКО С ОНЛАЙН ПОТОКАМИ!)</string>
     <string name="added_tip">Добавление трека в очередь...</string>
     <string name="starting_tip">Трек добавлен, запуск воспроизведения...</string>
-    <string name="err_db_tip">Удалил всё из базы данных!!!</string>
+    <string name="err_db_tip">Удалил всё из базы данных</string>
+    <string name="NullPointerErr">Неизвестная ошибка (NullPointerException)</string>
+    <string name="tip_remove">Удалил текущий поток</string>
 </resources>
