@@ -105,6 +105,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(Long position) {
                 long timeMs = player.getDuration();
+                if (player.getDuration() <= 0L){
+                    timeMs = 0L;
+                }
                 long totalSeconds = timeMs / 1000;
                 long totalMinutes = totalSeconds / 60;
                 long playingMs = player.getCurrentPosition();
