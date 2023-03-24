@@ -2,15 +2,13 @@ package com.freeui.player;
 
 
 import android.app.Notification;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ServiceInfo;
-import android.graphics.Bitmap;
 import android.media.AudioAttributes;
 import android.media.AudioFocusRequest;
 import android.media.AudioManager;
+import android.media.MediaMetadataRetriever;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -20,16 +18,14 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.widget.Toast;
 
 
-import androidx.annotation.Nullable;
-
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.MediaMetadata;
+import com.google.android.exoplayer2.MetadataRetriever;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager.NotificationListener;
-
-import java.util.Objects;
 
 public class ExoplayerService extends Service {
     static ExoPlayer player;

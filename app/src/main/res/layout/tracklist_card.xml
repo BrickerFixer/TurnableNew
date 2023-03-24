@@ -22,18 +22,18 @@
             android:layout_height="match_parent">
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/shapeableImageView"
+                android:id="@+id/thumbnailcard"
                 android:layout_width="96dp"
                 android:layout_height="96dp"
                 android:layout_marginStart="16dp"
-                android:src="@drawable/noplay"
+                android:src="@drawable/artwork"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Large"/>
 
             <TextView
-                android:id="@+id/artist"
+                android:id="@+id/tracknamecard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="44dp"
@@ -43,11 +43,11 @@
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.05"
-                app:layout_constraintStart_toEndOf="@+id/shapeableImageView"
+                app:layout_constraintStart_toEndOf="@+id/thumbnailcard"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/trackName"
+                android:id="@+id/artistcard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/unknown_artist"
@@ -56,8 +56,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.05"
-                app:layout_constraintStart_toEndOf="@+id/shapeableImageView"
-                app:layout_constraintTop_toBottomOf="@+id/artist"
+                app:layout_constraintStart_toEndOf="@+id/thumbnailcard"
+                app:layout_constraintTop_toBottomOf="@+id/tracknamecard"
                 app:layout_constraintVertical_bias="0.0" />
 
             <ImageView

@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
 import android.app.ActivityManager;
@@ -24,7 +23,6 @@ import android.media.AudioFocusRequest;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.view.View;
 import android.widget.ImageButton;
@@ -36,9 +34,7 @@ import android.widget.Toast;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.Tracks;
-import com.google.android.exoplayer2.metadata.Metadata;
 import com.google.android.exoplayer2.ui.StyledPlayerView;
 
 import java.util.Objects;
@@ -85,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         ImageButton play = findViewById(R.id.playBtn);
         ImageButton next = findViewById(R.id.nextBtn);
         ImageButton prev = findViewById(R.id.prevBtn);
-        TextView trackname = findViewById(R.id.trackName);
+        TextView trackname = findViewById(R.id.artistcard);
         TextView artist = findViewById(R.id.composerName);
         TextView time = findViewById(R.id.timecode);
         SeekBar progress = findViewById(R.id.seekBar);
