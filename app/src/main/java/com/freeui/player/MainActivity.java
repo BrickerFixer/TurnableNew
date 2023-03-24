@@ -41,6 +41,8 @@ import com.google.android.exoplayer2.Tracks;
 import com.google.android.exoplayer2.metadata.Metadata;
 import com.google.android.exoplayer2.ui.StyledPlayerView;
 
+import java.util.Objects;
+
 
 public class MainActivity extends AppCompatActivity {
     public static final int PICK_AUDIO_REQUEST = 1;
@@ -208,8 +210,15 @@ public class MainActivity extends AppCompatActivity {
                 player.addListener(new Player.Listener() {
                     @Override
                     public void onTracksChanged(Tracks tracks) {
+                        if (player.getMediaItemCount() == 0){
+                            status.setVisibility(View.VISIBLE);
+                        }
                         if (player.getMediaMetadata().title == null) {
-                            trackname.setText(player.getCurrentMediaItem().localConfiguration.uri.getLastPathSegment());
+                            try {
+                                trackname.setText(Objects.requireNonNull(Objects.requireNonNull(player.getCurrentMediaItem()).localConfiguration).uri.getLastPathSegment());
+                            } catch (NullPointerException e){
+                                trackname.setText(R.string.unknown_track);
+                            }
                         } else {
                             trackname.setText(player.getMediaMetadata().title);
                         }
