@@ -19,10 +19,13 @@ import android.widget.Toast;
 import com.google.android.exoplayer2.ExoPlayer;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class QueueActivity extends AppCompatActivity {
     Intent serviceIntent;
-
+    String title;
+    String artist;
+    String uri;
     private ServiceConnection sConn;
     ExoPlayer player;
     QueueAdapter adapter;
@@ -74,8 +77,20 @@ public class QueueActivity extends AppCompatActivity {
     public ArrayList<QueueData> addtoqueue(){
         ArrayList<QueueData> list = new ArrayList<>();
         for (int i = 1; i <= player.getMediaItemCount(); i++){
-            list.add(new QueueData(player.getMediaMetadata().title.toString(),
-                    player.getMediaMetadata().artist.toString(),
+            try {
+                title = Objects.requireNonNull(player.getMediaMetadata().title.toString()).toString();
+            } catch (Exception e){
+                title = getString(R.string.unknown_track);
+                e.printStackTrace();
+            }
+           try {
+                artist = Objects.requireNonNull(player.getMediaMetadata().artist.toString()).toString();
+            } catch (Exception e){
+                artist = getString(R.string.unknown_artist);
+                e.printStackTrace();
+            }
+            list.add(new QueueData(title,
+                    artist,
                     ""));
         }
         return list;
