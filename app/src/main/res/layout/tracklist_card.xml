@@ -12,7 +12,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="128dp"
-        android:backgroundTint="@color/black"
+        android:backgroundTint="@color/bg"
         android:padding="4dp"
         android:paddingRight="60dp"
         app:cardCornerRadius="28dp">
@@ -34,7 +34,7 @@
 
             <TextView
                 android:id="@+id/tracknamecard"
-                android:layout_width="wrap_content"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="44dp"
                 android:text="@string/unknown_track"
@@ -42,20 +42,20 @@
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.05"
+                app:layout_constraintHorizontal_bias="0.112"
                 app:layout_constraintStart_toEndOf="@+id/thumbnailcard"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/artistcard"
-                android:layout_width="wrap_content"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:text="@string/unknown_artist"
                 android:textColor="@color/white"
                 android:textSize="11sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.05"
+                app:layout_constraintHorizontal_bias="0.112"
                 app:layout_constraintStart_toEndOf="@+id/thumbnailcard"
                 app:layout_constraintTop_toBottomOf="@+id/tracknamecard"
                 app:layout_constraintVertical_bias="0.0" />

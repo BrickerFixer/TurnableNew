@@ -21,6 +21,7 @@ import com.google.android.exoplayer2.ExoPlayer;
 import java.util.ArrayList;
 
 public class QueueActivity extends AppCompatActivity {
+    Intent serviceIntent;
 
     private ServiceConnection sConn;
     ExoPlayer player;
@@ -35,7 +36,7 @@ public class QueueActivity extends AppCompatActivity {
         list = new ArrayList<>();
         Button rm = findViewById(R.id.remove);
         RecyclerView queue = findViewById(R.id.queue);
-        Intent serviceIntent = new Intent(this, ExoplayerService.class);
+        serviceIntent = new Intent(this, ExoplayerService.class);
         sConn = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
@@ -73,11 +74,15 @@ public class QueueActivity extends AppCompatActivity {
     public ArrayList<QueueData> addtoqueue(){
         ArrayList<QueueData> list = new ArrayList<>();
         for (int i = 1; i <= player.getMediaItemCount(); i++){
-            list.add(new QueueData(getString(R.string.unknown_track),
-                    getString(R.string.unknown_artist),
+            list.add(new QueueData(player.getMediaMetadata().title.toString(),
+                    player.getMediaMetadata().artist.toString(),
                     ""));
         }
         return list;
+    }
+    protected void onStart() {
+        bindService(serviceIntent, sConn, BIND_AUTO_CREATE);
+        super.onStart();
     }
     @Override
     public void onStop(){
