@@ -7,6 +7,8 @@ Please, understand that this is my first ever usable app made, thanks!
 Turnable is a player that allows users to play files from network with streaming over HTTP. It uses ExoPlayer2 as it's base and has a pretty slick design.
 ## Why does this thing exist...
 This was created as a final project for a Samsung Innovation Campus IT School course. Pretty fun thing to do, let me say!
+
+This branch is the branch with experimental changes done to the UI design and features that are not finished/not gonna make it to the release.
 ## Thanks to...
 [Morhetz](https://github.com/morhetz) for his amazing [gruvbox color scheme](https://github.com/morhetz/gruvbox)
 
