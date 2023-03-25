@@ -1,12 +1,12 @@
-# Turnable Rewrite
+# Turnable Kotlin/Jetpack Compose edition
 ![Artwork](artwork/header.png)
 ## DISCLAIMER:
-Warning! App contains a lot of trash code and is still in development!
-Please, understand that this is my first ever usable app made, thanks!
+Warning! App contains is made out of trash code and is still in very bad development!
+THIS IS MY FIRST TRY AT LEARNING KOTLIN AND IT'S TECHNOLOGIES! PLEASE, UNDERSTAND THAT THE TRASH CODE IS INEVITABLE!
 ## Ooo! What is this?
-Turnable is a player that allows users to play files from network with streaming over HTTP. It uses ExoPlayer2 as it's base and has a pretty slick design.
+Turnable is a player that allows users to play files from network with streaming over HTTP. It uses ExoPlayer2 as it's base and has a pretty slick design which is gonna be inspired by Material Design 3 in this release!
 ## Why does this thing exist...
-This was created as a final project for a Samsung Innovation Campus IT School course. Pretty fun thing to do, let me say!
+This is a kind of spinoff of the original app in Kotlin and Compose that would try to follow Android's recommended practices.
 ## Thanks to...
 [Morhetz](https://github.com/morhetz) for his amazing [gruvbox color scheme](https://github.com/morhetz/gruvbox)
 
