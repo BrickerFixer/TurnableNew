@@ -54,8 +54,16 @@ public class ExoplayerService extends Service {
         @Override
         public void onAudioFocusChange(int focusChange) {
             if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
-                player.play();
+
             } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
+                player.pause();
+            } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN_TRANSIENT){
+
+            } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT){
+                player.pause();
+            } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK){
+
+            } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK){
                 player.pause();
             }
         }
@@ -87,14 +95,21 @@ public class ExoplayerService extends Service {
                     .setUsage(AudioAttributes.USAGE_MEDIA)
                     .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                     .build();
-            focusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+            focusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK)
                     .setAudioAttributes(playbackAttributes)
                     .setAcceptsDelayedFocusGain(false)
                     .setWillPauseWhenDucked(true)
                     .setForceDucking(true)
                     .setOnAudioFocusChangeListener(changeListener)
                     .build();
-            am.requestAudioFocus(focusRequest);
+            player.addListener(new Player.Listener() {
+                @Override
+                public void onIsPlayingChanged(boolean isPlaying) {
+                    if (player.isPlaying()){
+                        am.requestAudioFocus(focusRequest);
+                    }
+                }
+            });
             session = new MediaSessionCompat(this, "TurnableService");
             sessionConnector = new MediaSessionConnector(session);
             sessionConnector.setPlayer(player);
