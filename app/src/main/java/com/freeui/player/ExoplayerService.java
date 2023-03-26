@@ -27,6 +27,8 @@ import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager.NotificationListener;
 
+import java.util.List;
+
 public class ExoplayerService extends Service {
     static ExoPlayer player;
     PlayerBinder binder = new PlayerBinder();
@@ -121,10 +123,11 @@ public class ExoplayerService extends Service {
             if (dao.getAll().size() > 0) {
                 Toast.makeText(getApplicationContext(), R.string.resume_tip,
                         Toast.LENGTH_SHORT).show();
-                for (int i = 1; i <= dao.getAll().size(); i++) {
-                        player.addMediaItem(MediaItem.fromUri(dao.getById(i).getTrackuri()));
+                List<Track> trackstoload =  dao.getAll();
+                for (int i = 0; i <= dao.getAll().size()-1; i++) {
+                    player.addMediaItem(MediaItem.fromUri(trackstoload.get(i).getTrackuri()));
+                    player.prepare();
                 }
-                player.prepare();
                 player.play();
             }
             notificationManager = new PlayerNotificationManager.Builder(this, NOW_PLAYING_NOTIFICATION_ID, NOW_PLAYING_CHANNEL_ID)

@@ -4,11 +4,9 @@ import androidx.room.*
 
 @Dao
 interface TrackDao {
-    @Query("SELECT trackuri FROM Track")
+    @Query("SELECT * FROM Track")
     fun getAll(): List<Track>
 
-    @Query("SELECT trackuri FROM track WHERE id = :id")
-    fun getById(id: Int): Track
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(track: Track)
     @Delete
