@@ -310,7 +310,6 @@ public class MainActivity extends AppCompatActivity {
     }
     @Override
     public void onDestroy() {
-        stopService(serviceIntent);
         super.onDestroy();
     }
 }
