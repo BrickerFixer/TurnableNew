@@ -1,4 +1,4 @@
-# Turnable Rewrite
+# Turnable
 ![Artwork](artwork/header.png)
 ## DISCLAIMER:
 Warning! App contains a lot of trash code and is still in development!
