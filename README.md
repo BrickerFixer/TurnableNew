@@ -1,5 +1,5 @@
 # Turnable Kotlin/Jetpack Compose edition
-![Artwork](artwork/header.png)
+![Artwork](artwork/Turnable_kt.png)
 ## DISCLAIMER:
 Warning! App contains is made out of trash code and is still in very bad development!
 THIS IS MY FIRST TRY AT LEARNING KOTLIN AND IT'S TECHNOLOGIES! PLEASE, UNDERSTAND THAT THE TRASH CODE IS INEVITABLE!
