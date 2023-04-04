@@ -32,8 +32,8 @@ import java.util.List;
 public class ExoplayerService extends Service {
     static ExoPlayer player;
     PlayerBinder binder = new PlayerBinder();
-    MediaSessionCompat session;
-    MediaSessionConnector sessionConnector;
+    static MediaSessionCompat session;
+    static MediaSessionConnector sessionConnector;
     static AudioFocusRequest focusRequest;
     static AudioAttributes playbackAttributes;
     static AudioManager am;

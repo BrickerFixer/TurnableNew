@@ -4,6 +4,7 @@ import static com.freeui.player.ExoplayerService.am;
 import static com.freeui.player.ExoplayerService.dao;
 import static com.freeui.player.ExoplayerService.focusRequest;
 import static com.freeui.player.ExoplayerService.player;
+import static com.freeui.player.ExoplayerService.session;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +25,7 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;

@@ -52,6 +52,7 @@ public class QueueActivity extends AppCompatActivity {
                 rm.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        adapter.notifyItemRemoved(player.getCurrentMediaItemIndex());
                        player.removeMediaItem(player.getCurrentMediaItemIndex());
                        dao.delete(dao.getAll().get(player.getCurrentMediaItemIndex()));
                         Toast.makeText(getApplicationContext(), R.string.tip_remove, Toast.LENGTH_LONG);
