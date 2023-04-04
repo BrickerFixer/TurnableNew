@@ -153,40 +153,24 @@ public class ExoplayerService extends Service {
             notificationManager.setPlayer(player);
             notificationManager.setMediaSessionToken(session.getSessionToken());
             notificationManager.setSmallIcon(R.drawable.ic_launcher_foreground);
-        } else if (mediaItemUri == "RMx63757272656e74"){
-            rmMediaItem(player);
-        } else if (player.getMediaItemCount() == 0 && mediaItemUri != "RMx63757272656e74") {
+            notificationManager.setColorized(true);
+            notificationManager.setColor(getColor(R.color.bg));
+        } else if (player.getMediaItemCount() == 0) {
             playMediaItem(mediaItemUri, player);
-        } else if (player.getMediaItemCount() > 0 && mediaItemUri != "RMx63757272656e74"){
+        } else if (player.getMediaItemCount() > 0){
             addMediaItem(mediaItemUri, player);
         }
     }
-
-    public void rmMediaItem(ExoPlayer player) {
-        if (player.getMediaItemCount() == 0){
-            Toast.makeText(getApplicationContext(), "No MediaItems to remove!", Toast.LENGTH_LONG).show();
-        } else if (player.getMediaItemCount() > player.getCurrentMediaItemIndex()){
-            player.removeMediaItem(player.getCurrentMediaItemIndex());
-            player.seekToNextMediaItem();
-        }else if (player.getMediaItemCount() <= player.getCurrentMediaItemIndex()){
-            player.removeMediaItem(player.getCurrentMediaItemIndex());
-            player.seekToPreviousMediaItem();
-        }
-    }
-
     public void addMediaItem(String mediaItemUri, ExoPlayer player) {
-        if (mediaItemUri != "RMx63757272656e74") {
             player.addMediaItem(MediaItem.fromUri(mediaItemUri));
             Track tr = new Track(null, mediaItemUri);
             dao.insert(tr);
             player.prepare();
             Toast.makeText(getApplicationContext(), R.string.added_tip,
                     Toast.LENGTH_SHORT).show();
-        }
     }
 
     public void playMediaItem(String mediaItemUri, ExoPlayer player) {
-        if (mediaItemUri != "RMx63757272656e74") {
             player.addMediaItem(MediaItem.fromUri(mediaItemUri));
             Track tr = new Track(null, mediaItemUri);
             dao.insert(tr);
@@ -194,7 +178,6 @@ public class ExoplayerService extends Service {
             Toast.makeText(getApplicationContext(), R.string.starting_tip,
                     Toast.LENGTH_SHORT).show();
             player.play();
-        }
     }
 
     private void externalDevicesController() {
