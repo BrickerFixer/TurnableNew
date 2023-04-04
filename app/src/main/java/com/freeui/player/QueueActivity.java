@@ -52,9 +52,11 @@ public class QueueActivity extends AppCompatActivity {
                 rm.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        adapter.notifyItemRemoved(player.getCurrentMediaItemIndex());
-                       player.removeMediaItem(player.getCurrentMediaItemIndex());
-                       dao.delete(dao.getAll().get(player.getCurrentMediaItemIndex()));
+                        int previousIndex = player.getCurrentMediaItemIndex();
+                        player.removeMediaItem(player.getCurrentMediaItemIndex());
+                        dao.delete(dao.getAll().get(player.getCurrentMediaItemIndex()));
+                        list.remove(previousIndex);
+                        adapter.notifyItemRemoved(previousIndex);
                         Toast.makeText(getApplicationContext(), R.string.tip_remove, Toast.LENGTH_LONG);
                     }
                 });
