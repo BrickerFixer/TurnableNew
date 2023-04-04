@@ -2,6 +2,7 @@ package com.freeui.player;
 
 
 import static com.freeui.player.ExoplayerService.dao;
+import static com.google.android.exoplayer2.MetadataRetriever.retrieveMetadata;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
+import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.transition.Fade;
@@ -19,6 +21,10 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.MetadataRetriever;
+import com.google.android.exoplayer2.metadata.Metadata;
+import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -84,6 +90,7 @@ public class QueueActivity extends AppCompatActivity {
         ArrayList<QueueData> list = new ArrayList<>();
         for (int i = 1; i <= player.getMediaItemCount(); i++){
             try {
+                ListenableFuture<TrackGroupArray> trackGroupsFuture = MetadataRetriever.retrieveMetadata(getApplicationContext(), player.getMediaItemAt(i));
                 title = Objects.requireNonNull(player.getMediaMetadata().title.toString()).toString();
             } catch (Exception e){
                 title = getString(R.string.unknown_track);
