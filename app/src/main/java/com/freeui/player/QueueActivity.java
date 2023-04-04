@@ -1,6 +1,8 @@
 package com.freeui.player;
 
 
+import static com.freeui.player.ExoplayerService.dao;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -51,6 +53,7 @@ public class QueueActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                        player.removeMediaItem(player.getCurrentMediaItemIndex());
+                       dao.delete(dao.getAll().get(player.getCurrentMediaItemIndex()));
                         Toast.makeText(getApplicationContext(), R.string.tip_remove, Toast.LENGTH_LONG);
                     }
                 });
