@@ -4,18 +4,17 @@ import static com.freeui.player.ExoplayerService.am;
 import static com.freeui.player.ExoplayerService.dao;
 import static com.freeui.player.ExoplayerService.focusRequest;
 import static com.freeui.player.ExoplayerService.player;
-import static com.freeui.player.ExoplayerService.session;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.Observer;
 
-import android.app.ActivityManager;
+
+
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
@@ -25,7 +24,6 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v4.media.session.PlaybackStateCompat;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -103,21 +101,18 @@ public class MainActivity extends AppCompatActivity {
         anim.setEnterFadeDuration(3000);
         anim.setExitFadeDuration(3000);
         PositionLiveData positionLiveData = new PositionLiveData(player);
-        positionLiveData.observe(this, new Observer<Long>() {
-            @Override
-            public void onChanged(Long position) {
-                long timeMs = player.getDuration();
-                if (player.getDuration() <= 0L){
-                    timeMs = 0L;
-                }
-                long totalSeconds = timeMs / 1000;
-                long totalMinutes = totalSeconds / 60;
-                long playingMs = player.getCurrentPosition();
-                long playingSeconds = playingMs / 1000;
-                long playingMinutes = playingSeconds / 60;
-                time.setText(String.format("%02d", playingMinutes % 60) + ":" + String.format("%02d", playingSeconds % 60) + "/" + String.format("%02d", totalMinutes % 60) + ":" + String.format("%02d", totalSeconds % 60));
-                progress.setProgress((int) ((player.getCurrentPosition() * 100) / player.getDuration()));
+        positionLiveData.observe(this, position -> {
+            long timeMs = player.getDuration();
+            if (player.getDuration() <= 0L){
+                timeMs = 0L;
             }
+            long totalSeconds = timeMs / 1000;
+            long totalMinutes = totalSeconds / 60;
+            long playingMs = player.getCurrentPosition();
+            long playingSeconds = playingMs / 1000;
+            long playingMinutes = playingSeconds / 60;
+            time.setText(String.format("%02d", playingMinutes % 60) + ":" + String.format("%02d", playingSeconds % 60) + "/" + String.format("%02d", totalMinutes % 60) + ":" + String.format("%02d", totalSeconds % 60));
+            progress.setProgress((int) ((player.getCurrentPosition() * 100) / player.getDuration()));
         });
         sConn = new ServiceConnection() {
             @Override
@@ -150,62 +145,33 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 artwork.setPlayer(player);
-                shuffle.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if(player.getShuffleModeEnabled()){
-                            player.setShuffleModeEnabled(false);
-                            shuffle.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.shuffle_48px));
-                        }else if (!player.getShuffleModeEnabled()){
-                            player.setShuffleModeEnabled(true);
-                            shuffle.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.shuffle_on_48px));
-                        }
+                shuffle.setOnClickListener(view -> {
+                    if(player.getShuffleModeEnabled()){
+                        player.setShuffleModeEnabled(false);
+                        shuffle.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.shuffle_48px));
+                    }else if (!player.getShuffleModeEnabled()){
+                        player.setShuffleModeEnabled(true);
+                        shuffle.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.shuffle_on_48px));
                     }
                 });
-                local.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        openFileChooser();
-                    }
+                local.setOnClickListener(view -> openFileChooser());
+                local.setOnLongClickListener(v -> {
+                    openFolderChooser();
+                    return false;
                 });
-                local.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        openFolderChooser();
-                        return false;
-                    }
-                });
-                net.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        startActivity(toStorage);
-                    }
-                });
-                queue.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        startActivity(toQueue);
-                    }
-                });
-                settings.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        startActivity(toSettings);
-                    }
-                });
-                repeat.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (player.getRepeatMode() == Player.REPEAT_MODE_OFF){
-                            player.setRepeatMode(Player.REPEAT_MODE_ALL);
-                            repeat.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.repeat_on_48px));
-                        }else if(player.getRepeatMode() == Player.REPEAT_MODE_ALL){
-                            player.setRepeatMode(Player.REPEAT_MODE_ONE);
-                            repeat.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.repeat_one_on_48px));
-                        }else{
-                            player.setRepeatMode(Player.REPEAT_MODE_OFF);
-                            repeat.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.repeat_48px));
-                        }
+                net.setOnClickListener(view -> startActivity(toStorage));
+                queue.setOnClickListener(view -> startActivity(toQueue));
+                settings.setOnClickListener(view -> startActivity(toSettings));
+                repeat.setOnClickListener(view -> {
+                    if (player.getRepeatMode() == Player.REPEAT_MODE_OFF){
+                        player.setRepeatMode(Player.REPEAT_MODE_ALL);
+                        repeat.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.repeat_on_48px));
+                    }else if(player.getRepeatMode() == Player.REPEAT_MODE_ALL){
+                        player.setRepeatMode(Player.REPEAT_MODE_ONE);
+                        repeat.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.repeat_one_on_48px));
+                    }else{
+                        player.setRepeatMode(Player.REPEAT_MODE_OFF);
+                        repeat.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.repeat_48px));
                     }
                 });
                 player.addListener(new Player.Listener() {
@@ -243,29 +209,16 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
-                play.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (player.isPlaying() == true) {
-                            player.pause();
-                        } else {
-                            am.requestAudioFocus(focusRequest);
-                            player.play();
-                        }
+                play.setOnClickListener(view -> {
+                    if (player.isPlaying()) {
+                        player.pause();
+                    } else {
+                        am.requestAudioFocus(focusRequest);
+                        player.play();
                     }
                 });
-                next.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        player.seekToNextMediaItem();
-                    }
-                });
-                prev.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        player.seekToPreviousMediaItem();
-                    }
-                });
+                next.setOnClickListener(v -> player.seekToNextMediaItem());
+                prev.setOnClickListener(v -> player.seekToPreviousMediaItem());
                 progress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -279,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
                         if(player.getMediaItemCount() != 0) {
-                            player.seekTo((progress.getProgress() * (long) player.getDuration()) / 100);
+                            player.seekTo((progress.getProgress() * player.getDuration()) / 100);
                         }
                     }
                 });
@@ -296,15 +249,7 @@ public class MainActivity extends AppCompatActivity {
         AudioFocusRequest focusRequest = ExoplayerService.focusRequest;
         AudioManager am = ExoplayerService.am;
     }
-    private boolean isMyServiceRunning(Class<?> serviceClass) {
-        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (serviceClass.getName().equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
-    }
+
     @Override
     public void onStop(){
         unbindService(sConn);
