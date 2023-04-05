@@ -25,7 +25,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class QueueActivity extends AppCompatActivity implements OnItemChildClickListener {
+public class QueueActivity extends AppCompatActivity implements OnItemChildClickListener, OnItemClickListener {
     Intent serviceIntent;
     String title;
     String artist;
@@ -43,12 +43,14 @@ public class QueueActivity extends AppCompatActivity implements OnItemChildClick
         Button rm = findViewById(R.id.remove);
         RecyclerView queue = findViewById(R.id.queue);
         OnItemChildClickListener listener = this;
+        OnItemClickListener cardlistener = this;
         serviceIntent = new Intent(this, ExoplayerService.class);
         sConn = new ServiceConnection() {
+
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
                 list = addtoqueue();
-                adapter = new QueueAdapter(list, listener);
+                adapter = new QueueAdapter(list, listener, cardlistener);
                 queue.setAdapter(adapter);
                 queue.setLayoutManager(new LinearLayoutManager(getParent()));
                 rm.setOnClickListener(v -> {
@@ -117,5 +119,10 @@ public class QueueActivity extends AppCompatActivity implements OnItemChildClick
         list.remove(position);
         adapter.notifyItemRemoved(position);
         Toast.makeText(getApplicationContext(), getString(R.string.removeexacttrack) + (position + 1), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void clickItem(int position) {
+        player.seekTo(position, 0);
     }
 }

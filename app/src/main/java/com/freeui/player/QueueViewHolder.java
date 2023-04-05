@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.imageview.ShapeableImageView;
@@ -15,6 +16,7 @@ public class QueueViewHolder
     TextView artist;
     ImageButton rm;
     View view;
+    CardView card;
 
     QueueViewHolder(View itemView)
     {
@@ -31,6 +33,9 @@ public class QueueViewHolder
         rm
                 = (ImageButton)itemView
                 .findViewById(R.id.rmqueueitembtt);
+        card
+                =(CardView)itemView
+                .findViewById(R.id.trackCardView);
         view  = itemView;
     }
 }

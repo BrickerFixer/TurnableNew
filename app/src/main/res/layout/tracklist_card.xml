@@ -8,7 +8,9 @@
     android:layout_marginRight="@dimen/margin_medium"
     android:layout_marginTop="@dimen/margin_medium"
     android:gravity="center_vertical">
+
     <androidx.cardview.widget.CardView
+        android:id="@+id/trackCardView"
         android:layout_width="match_parent"
         android:layout_height="128dp"
         android:backgroundTint="@color/bg"
@@ -29,7 +31,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Large"/>
+                app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Large" />
 
             <TextView
                 android:id="@+id/tracknamecard"

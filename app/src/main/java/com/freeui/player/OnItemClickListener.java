@@ -1,4 +1,5 @@
 package com.freeui.player;
 
-public class OnItemClickListener {
+public interface OnItemClickListener {
+    void clickItem(int position);
 }
