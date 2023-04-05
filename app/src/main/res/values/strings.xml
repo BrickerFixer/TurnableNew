@@ -18,4 +18,6 @@
     <string name="NullPointerErr">Unexpected Failure (NullPointerException)</string>
     <string name="tip_remove">Removed current mediaItem</string>
     <string name="removeexacttrack">"Removed track number "</string>
+    <string name="remove_everything">Remove everything</string>
+    <string name="rm_hint_everything">Removed everything</string>
 </resources>

@@ -19,4 +19,6 @@
     <string name="NullPointerErr">Неизвестная ошибка (NullPointerException)</string>
     <string name="tip_remove">Удалил текущий поток</string>
     <string name="removeexacttrack">"Удалён трек номер "</string>
+    <string name="remove_everything">Удалить всё</string>
+    <string name="rm_hint_everything">Все треки были удалены</string>
 </resources>

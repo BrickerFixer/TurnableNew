@@ -2,6 +2,7 @@ package com.freeui.player;
 
 
 import static com.freeui.player.ExoplayerService.dao;
+import static com.freeui.player.R.string.rm_hint_everything;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -51,12 +52,11 @@ public class QueueActivity extends AppCompatActivity implements OnItemChildClick
                 queue.setAdapter(adapter);
                 queue.setLayoutManager(new LinearLayoutManager(getParent()));
                 rm.setOnClickListener(v -> {
-                    int previousIndex = player.getCurrentMediaItemIndex();
-                    player.removeMediaItem(player.getCurrentMediaItemIndex());
-                    dao.delete(dao.getAll().get(player.getCurrentMediaItemIndex()));
-                    list.remove(previousIndex);
-                    adapter.notifyItemRemoved(previousIndex);
-                    Toast.makeText(getApplicationContext(), R.string.tip_remove, Toast.LENGTH_LONG).show();
+                    list.clear();
+                    adapter.notifyItemRangeRemoved(0, player.getMediaItemCount());
+                    player.removeMediaItems(0, player.getMediaItemCount());
+                    dao.deleteAll();
+                    Toast.makeText(getApplicationContext(), rm_hint_everything, Toast.LENGTH_LONG).show();
                 });
             }
 
