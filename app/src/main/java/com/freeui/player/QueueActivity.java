@@ -12,24 +12,21 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
-import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.transition.Fade;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MetadataRetriever;
-import com.google.android.exoplayer2.metadata.Metadata;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class QueueActivity extends AppCompatActivity {
+public class QueueActivity extends AppCompatActivity implements OnItemChildClickListener {
     Intent serviceIntent;
     String title;
     String artist;
@@ -47,12 +44,13 @@ public class QueueActivity extends AppCompatActivity {
         list = new ArrayList<>();
         Button rm = findViewById(R.id.remove);
         RecyclerView queue = findViewById(R.id.queue);
+        OnItemChildClickListener listener = this;
         serviceIntent = new Intent(this, ExoplayerService.class);
         sConn = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
                 list = addtoqueue();
-                adapter = new QueueAdapter(list);
+                adapter = new QueueAdapter(list, listener);
                 queue.setAdapter(adapter);
                 queue.setLayoutManager(new LinearLayoutManager(getParent()));
                 rm.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +88,7 @@ public class QueueActivity extends AppCompatActivity {
         ArrayList<QueueData> list = new ArrayList<>();
         for (int i = 1; i <= player.getMediaItemCount(); i++){
             try {
-                ListenableFuture<TrackGroupArray> trackGroupsFuture = MetadataRetriever.retrieveMetadata(getApplicationContext(), player.getMediaItemAt(i));
+                ListenableFuture<TrackGroupArray> trackGroupsFuture = MetadataRetriever.retrieveMetadata(getApplicationContext(), player.getMediaItemAt(i-1));
                 title = Objects.requireNonNull(player.getMediaMetadata().title.toString()).toString();
             } catch (Exception e){
                 title = getString(R.string.unknown_track);
@@ -116,5 +114,14 @@ public class QueueActivity extends AppCompatActivity {
     public void onStop(){
         unbindService(sConn);
         super.onStop();
+    }
+
+    @Override
+    public void removeClick(int position) {
+        player.removeMediaItem(position);
+        dao.delete(dao.getAll().get(position));
+        list.remove(position);
+        adapter.notifyItemRemoved(position);
+        Toast.makeText(getApplicationContext(), getString(R.string.removeexacttrack) + position, Toast.LENGTH_LONG);
     }
 }

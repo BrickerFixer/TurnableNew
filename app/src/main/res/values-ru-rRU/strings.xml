@@ -18,4 +18,5 @@
     <string name="err_db_tip">Удалил всё из базы данных</string>
     <string name="NullPointerErr">Неизвестная ошибка (NullPointerException)</string>
     <string name="tip_remove">Удалил текущий поток</string>
+    <string name="removeexacttrack">"Удалён трек номер "</string>
 </resources>

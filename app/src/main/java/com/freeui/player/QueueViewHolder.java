@@ -1,6 +1,7 @@
 package com.freeui.player;
 
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,6 +13,7 @@ public class QueueViewHolder
     TextView trackName;
     ShapeableImageView thumb;
     TextView artist;
+    ImageButton rm;
     View view;
 
     QueueViewHolder(View itemView)
@@ -26,6 +28,9 @@ public class QueueViewHolder
         thumb
                 = (ShapeableImageView)itemView
                 .findViewById(R.id.thumbnailcard);
+        rm
+                = (ImageButton)itemView
+                .findViewById(R.id.rmqueueitembtt);
         view  = itemView;
     }
 }

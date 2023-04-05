@@ -16,9 +16,11 @@ import java.util.Collections;
 import java.util.List;
 
 public class QueueAdapter extends RecyclerView.Adapter<QueueViewHolder> {
+    private OnItemChildClickListener onItemChildClickListener;
     List<QueueData> list = Collections.emptyList();
-    public QueueAdapter(List<QueueData> list){
+    public QueueAdapter(List<QueueData> list, OnItemChildClickListener onItemChildClickListener){
         this.list = list;
+        this.onItemChildClickListener = onItemChildClickListener;
     }
     @NonNull
     @Override
@@ -32,6 +34,13 @@ public class QueueAdapter extends RecyclerView.Adapter<QueueViewHolder> {
     public void onBindViewHolder(@NonNull QueueViewHolder holder, int position) {
         holder.artist.setText(list.get(position).artist);
         holder.trackName.setText(list.get(position).trackName);
+        holder.rm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = holder.getAdapterPosition();
+                onItemChildClickListener.removeClick(position);
+            }
+        });
     }
 
     @Override

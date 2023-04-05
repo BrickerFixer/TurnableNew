@@ -17,4 +17,5 @@
     <string name="err_db_tip">Removed everything from persistent db</string>
     <string name="NullPointerErr">Unexpected Failure (NullPointerException)</string>
     <string name="tip_remove">Removed current mediaItem</string>
+    <string name="removeexacttrack">"Removed track number "</string>
 </resources>
