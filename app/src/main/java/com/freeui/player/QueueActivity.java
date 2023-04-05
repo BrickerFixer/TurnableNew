@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MetadataRetriever;
 import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.ArrayList;

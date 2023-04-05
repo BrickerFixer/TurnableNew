@@ -24,6 +24,7 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     ServiceConnection sConn;
     Intent serviceIntent = App.serviceIntent;
     private boolean bound;
+    Intent intent = new Intent();
 
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -54,13 +56,25 @@ public class MainActivity extends AppCompatActivity {
             Intent serviceIntent = new Intent(this, ExoplayerService.class);
             uri = data.getData();
             serviceIntent.putExtra("mediaitem", uri.toString());
+            try {
+                getApplicationContext().grantUriPermission(getApplicationContext().getPackageName(), uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+            }
+            catch (SecurityException e) {
+                Log.e("", e.toString());
+            }
+            try {
+                int takeFlags = intent.getFlags();
+                takeFlags &= (Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                getApplicationContext().getContentResolver().takePersistableUriPermission(uri, takeFlags);
+            } catch (SecurityException e) {
+                Log.e("", e.toString());
+            }
             startForegroundService(serviceIntent);
         }
     }
     public void openFileChooser(){
-        Intent intent = new Intent();
         intent.setType("audio/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
         startActivityForResult(intent, PICK_AUDIO_REQUEST);
     }
     public void openFolderChooser(){
