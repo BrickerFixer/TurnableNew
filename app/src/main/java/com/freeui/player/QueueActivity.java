@@ -116,6 +116,6 @@ public class QueueActivity extends AppCompatActivity implements OnItemChildClick
         dao.delete(dao.getAll().get(position));
         list.remove(position);
         adapter.notifyItemRemoved(position);
-        Toast.makeText(getApplicationContext(), getString(R.string.removeexacttrack) + position + 1, Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), getString(R.string.removeexacttrack) + (position + 1), Toast.LENGTH_LONG).show();
     }
 }
