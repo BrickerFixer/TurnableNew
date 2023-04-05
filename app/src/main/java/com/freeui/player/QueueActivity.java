@@ -2,7 +2,6 @@ package com.freeui.player;
 
 
 import static com.freeui.player.ExoplayerService.dao;
-import static com.google.android.exoplayer2.MetadataRetriever.retrieveMetadata;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,7 +13,6 @@ import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -30,7 +28,6 @@ public class QueueActivity extends AppCompatActivity implements OnItemChildClick
     Intent serviceIntent;
     String title;
     String artist;
-    String uri;
     private ServiceConnection sConn;
     ExoPlayer player;
     QueueAdapter adapter;
@@ -53,16 +50,13 @@ public class QueueActivity extends AppCompatActivity implements OnItemChildClick
                 adapter = new QueueAdapter(list, listener);
                 queue.setAdapter(adapter);
                 queue.setLayoutManager(new LinearLayoutManager(getParent()));
-                rm.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        int previousIndex = player.getCurrentMediaItemIndex();
-                        player.removeMediaItem(player.getCurrentMediaItemIndex());
-                        dao.delete(dao.getAll().get(player.getCurrentMediaItemIndex()));
-                        list.remove(previousIndex);
-                        adapter.notifyItemRemoved(previousIndex);
-                        Toast.makeText(getApplicationContext(), R.string.tip_remove, Toast.LENGTH_LONG);
-                    }
+                rm.setOnClickListener(v -> {
+                    int previousIndex = player.getCurrentMediaItemIndex();
+                    player.removeMediaItem(player.getCurrentMediaItemIndex());
+                    dao.delete(dao.getAll().get(player.getCurrentMediaItemIndex()));
+                    list.remove(previousIndex);
+                    adapter.notifyItemRemoved(previousIndex);
+                    Toast.makeText(getApplicationContext(), R.string.tip_remove, Toast.LENGTH_LONG).show();
                 });
             }
 
@@ -122,6 +116,6 @@ public class QueueActivity extends AppCompatActivity implements OnItemChildClick
         dao.delete(dao.getAll().get(position));
         list.remove(position);
         adapter.notifyItemRemoved(position);
-        Toast.makeText(getApplicationContext(), getString(R.string.removeexacttrack) + position, Toast.LENGTH_LONG);
+        Toast.makeText(getApplicationContext(), getString(R.string.removeexacttrack) + position, Toast.LENGTH_LONG).show();
     }
 }
