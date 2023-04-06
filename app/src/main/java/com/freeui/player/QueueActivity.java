@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.MetadataRetriever;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.common.util.concurrent.Futures;
@@ -85,14 +86,13 @@ public class QueueActivity extends AppCompatActivity implements OnItemChildClick
         ArrayList<QueueData> list = new ArrayList<>();
         for (int i = 1; i <= player.getMediaItemCount(); i++){
             try {
-                ListenableFuture<TrackGroupArray> trackGroupsFuture = MetadataRetriever.retrieveMetadata(getApplicationContext(), player.getMediaItemAt(i-1));
-                title = Objects.requireNonNull(player.getMediaMetadata().title.toString());
+                title = MediaItem.fromUri(dao.getAll().get(i).getTrackuri()).mediaMetadata.title.toString();
             } catch (Exception e){
                 title = getString(R.string.unknown_track);
                 e.printStackTrace();
             }
            try {
-                artist = Objects.requireNonNull(player.getMediaMetadata().artist.toString());
+                artist = MediaItem.fromUri(dao.getAll().get(i).getTrackuri()).mediaMetadata.artist.toString();
             } catch (Exception e){
                 artist = getString(R.string.unknown_artist);
                 e.printStackTrace();
