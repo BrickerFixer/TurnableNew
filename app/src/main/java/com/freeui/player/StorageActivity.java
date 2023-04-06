@@ -53,9 +53,7 @@ public class StorageActivity extends AppCompatActivity implements OnItemClickLis
     }
     public ArrayList<DemoQueueData> addtoqueue() {
         ArrayList<DemoQueueData> list = new ArrayList<>();
-        list.add(new DemoQueueData("Example",
-                "Test",
-                "", "https://storage.googleapis.com/exoplayer-test-media-0/play.mp3"));
+
         return list;
     }
 

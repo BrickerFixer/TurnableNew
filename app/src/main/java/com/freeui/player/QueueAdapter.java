@@ -16,8 +16,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class QueueAdapter extends RecyclerView.Adapter<QueueViewHolder> {
-    private OnItemChildClickListener onItemChildClickListener;
-    private OnItemClickListener onItemClickListener;
+    private final OnItemChildClickListener onItemChildClickListener;
+    private final OnItemClickListener onItemClickListener;
     List<QueueData> list = Collections.emptyList();
     public QueueAdapter(List<QueueData> list, OnItemChildClickListener onItemChildClickListener, OnItemClickListener onItemClickListener){
         this.list = list;

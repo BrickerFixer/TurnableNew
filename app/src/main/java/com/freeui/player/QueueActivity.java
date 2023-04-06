@@ -86,13 +86,13 @@ public class QueueActivity extends AppCompatActivity implements OnItemChildClick
         for (int i = 1; i <= player.getMediaItemCount(); i++){
             try {
                 ListenableFuture<TrackGroupArray> trackGroupsFuture = MetadataRetriever.retrieveMetadata(getApplicationContext(), player.getMediaItemAt(i-1));
-                title = Objects.requireNonNull(player.getMediaMetadata().title.toString()).toString();
+                title = Objects.requireNonNull(player.getMediaMetadata().title.toString());
             } catch (Exception e){
                 title = getString(R.string.unknown_track);
                 e.printStackTrace();
             }
            try {
-                artist = Objects.requireNonNull(player.getMediaMetadata().artist.toString()).toString();
+                artist = Objects.requireNonNull(player.getMediaMetadata().artist.toString());
             } catch (Exception e){
                 artist = getString(R.string.unknown_artist);
                 e.printStackTrace();

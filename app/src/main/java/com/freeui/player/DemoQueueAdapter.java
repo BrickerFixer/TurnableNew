@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class DemoQueueAdapter extends RecyclerView.Adapter<DemoQueueViewHolder> {
-    private OnItemClickListener onItemClickListener;
+    private final OnItemClickListener onItemClickListener;
     List<DemoQueueData> list = Collections.emptyList();
     public DemoQueueAdapter(List<DemoQueueData> list, OnItemClickListener onItemClickListener){
         this.list = list;

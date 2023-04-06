@@ -9,15 +9,15 @@ import com.google.android.exoplayer2.ExoPlayer;
 
 public class PositionLiveData extends LiveData<Long> {
 
-    private int updateInterval = 1000; // Update interval in milliseconds
-    private Handler handler = new Handler(Looper.getMainLooper());
+    private final int updateInterval = 1000; // Update interval in milliseconds
+    private final Handler handler = new Handler(Looper.getMainLooper());
 
-    private ExoPlayer player;
+    private final ExoPlayer player;
 
     public PositionLiveData(ExoPlayer player) {
         this.player = player;
     }
-    private Runnable runnable = new Runnable() {
+    private final Runnable runnable = new Runnable() {
         @Override
         public void run() {
             if (player != null){
