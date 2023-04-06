@@ -13,6 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 
+
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -57,7 +58,8 @@ public class MainActivity extends AppCompatActivity {
             serviceIntent.putExtra("mediaitem", uri.toString());
             try {
                 getApplicationContext().grantUriPermission(getApplicationContext().getPackageName(), uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-            } catch (SecurityException e) {
+            }
+            catch (SecurityException e) {
                 Log.e("", e.toString());
             }
             try {
@@ -70,25 +72,21 @@ public class MainActivity extends AppCompatActivity {
             startForegroundService(serviceIntent);
         }
     }
-
-    public void openFileChooser() {
+    public void openFileChooser(){
         intent.setType("audio/*");
         intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
         startActivityForResult(intent, PICK_AUDIO_REQUEST);
     }
-
-    public void openFolderChooser() {
+    public void openFolderChooser(){
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_OPEN_DOCUMENT_TREE);
         startActivityForResult(intent, PICK_AUDIO_REQUEST);
     }
-
     @Override
     protected void onStart() {
         bindService(serviceIntent, sConn, BIND_AUTO_CREATE);
         super.onStart();
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         PositionLiveData positionLiveData = new PositionLiveData(player);
         positionLiveData.observe(this, position -> {
             long timeMs = player.getDuration();
-            if (player.getDuration() <= 0L) {
+            if (player.getDuration() <= 0L){
                 timeMs = 0L;
             }
             long totalSeconds = timeMs / 1000;
@@ -133,12 +131,12 @@ public class MainActivity extends AppCompatActivity {
         sConn = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder binder) {
-                ExoplayerService exoService = ((ExoplayerService.PlayerBinder) binder).getService();
+                ExoplayerService exoService = ((ExoplayerService.PlayerBinder)binder).getService();
                 bound = true;
                 player.addListener(new Player.Listener() {
                     @Override
                     public void onIsLoadingChanged(boolean isLoading) {
-                        if (player.isLoading()) {
+                        if (player.isLoading()){
                             play.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.sync_48px));
                         } else {
                             play.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.pause_48px));
@@ -162,10 +160,10 @@ public class MainActivity extends AppCompatActivity {
                 });
                 artwork.setPlayer(player);
                 shuffle.setOnClickListener(view -> {
-                    if (player.getShuffleModeEnabled()) {
+                    if(player.getShuffleModeEnabled()){
                         player.setShuffleModeEnabled(false);
                         shuffle.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.shuffle_48px));
-                    } else if (!player.getShuffleModeEnabled()) {
+                    }else if (!player.getShuffleModeEnabled()){
                         player.setShuffleModeEnabled(true);
                         shuffle.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.shuffle_on_48px));
                     }
@@ -179,13 +177,13 @@ public class MainActivity extends AppCompatActivity {
                 queue.setOnClickListener(view -> startActivity(toQueue));
                 settings.setOnClickListener(view -> startActivity(toSettings));
                 repeat.setOnClickListener(view -> {
-                    if (player.getRepeatMode() == Player.REPEAT_MODE_OFF) {
+                    if (player.getRepeatMode() == Player.REPEAT_MODE_OFF){
                         player.setRepeatMode(Player.REPEAT_MODE_ALL);
                         repeat.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.repeat_on_48px));
-                    } else if (player.getRepeatMode() == Player.REPEAT_MODE_ALL) {
+                    }else if(player.getRepeatMode() == Player.REPEAT_MODE_ALL){
                         player.setRepeatMode(Player.REPEAT_MODE_ONE);
                         repeat.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.repeat_one_on_48px));
-                    } else {
+                    }else{
                         player.setRepeatMode(Player.REPEAT_MODE_OFF);
                         repeat.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.repeat_48px));
                     }
@@ -193,13 +191,13 @@ public class MainActivity extends AppCompatActivity {
                 player.addListener(new Player.Listener() {
                     @Override
                     public void onTracksChanged(Tracks tracks) {
-                        if (player.getMediaItemCount() == 0) {
+                        if (player.getMediaItemCount() == 0){
                             status.setVisibility(View.VISIBLE);
                         }
                         if (player.getMediaMetadata().title == null) {
                             try {
                                 trackname.setText(Objects.requireNonNull(Objects.requireNonNull(player.getCurrentMediaItem()).localConfiguration).uri.getLastPathSegment());
-                            } catch (NullPointerException e) {
+                            } catch (NullPointerException e){
                                 trackname.setText(R.string.unknown_track);
                             }
                         } else {
@@ -220,8 +218,8 @@ public class MainActivity extends AppCompatActivity {
                             play.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.pause_48px));
                             anim.start();
                         } else {
-                            play.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.play_arrow_48px));
-                            anim.stop();
+                                play.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.play_arrow_48px));
+                                anim.stop();
                         }
                     }
                 });
@@ -247,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
-                        if (player.getMediaItemCount() != 0) {
+                        if(player.getMediaItemCount() != 0) {
                             player.seekTo((progress.getProgress() * player.getDuration()) / 100);
                         }
                     }
@@ -267,11 +265,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onStop() {
+    public void onStop(){
         unbindService(sConn);
         super.onStop();
     }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
