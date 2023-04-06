@@ -19,10 +19,38 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/img" />
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:text="@string/picks"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="32sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/demoQueue"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fadingEdge="vertical"
+        android:fadingEdgeLength="16dp"
+        android:requiresFadingEdge="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_medium"
+        android:layout_marginBottom="@dimen/margin_medium"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,18 +65,27 @@
             android:hint="@string/media_link"
             android:inputType="textPersonName"
             android:textAlignment="center"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            tools:layout_conversion_absoluteHeight="58dp"
+            tools:layout_editor_absoluteY="658dp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_conversion_absoluteWidth="236dp" />
 
         <Button
             android:id="@+id/addtoqueuebtt"
             style="@style/Widget.AppCompat.Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/button"
             android:fontFamily="@font/mono"
-            android:text="@string/add"
+            android:text="@string/add_short"
             app:icon="@drawable/add_to_queue_48px"
             app:iconGravity="textEnd"
-            app:iconSize="24dp" />
+            app:iconSize="24dp"
+            tools:layout_conversion_absoluteHeight="58dp"
+            tools:layout_conversion_absoluteWidth="143dp"
+            tools:layout_editor_absoluteX="252dp"
+            tools:layout_editor_absoluteY="662dp" />
 
     </LinearLayout>
 

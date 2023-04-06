@@ -20,4 +20,6 @@
     <string name="removeexacttrack">"Removed track number "</string>
     <string name="remove_everything">Remove everything</string>
     <string name="rm_hint_everything">Removed everything</string>
+    <string name="picks">Try these hottest picks!</string>
+    <string name="add_short">add</string>
 </resources>
