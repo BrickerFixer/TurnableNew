@@ -27,16 +27,19 @@ import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.GlideBuilder;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.Tracks;
 import com.google.android.exoplayer2.ui.StyledPlayerView;
+import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.Objects;
 
@@ -64,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             }
             try {
                 int takeFlags = intent.getFlags();
-                takeFlags &= (Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                takeFlags &= (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 getApplicationContext().getContentResolver().takePersistableUriPermission(uri, takeFlags);
             } catch (SecurityException e) {
                 Log.e("", e.toString());
@@ -99,14 +102,13 @@ public class MainActivity extends AppCompatActivity {
         TextView artist = findViewById(R.id.composerName);
         TextView time = findViewById(R.id.timecode);
         SeekBar progress = findViewById(R.id.seekBar);
-        StyledPlayerView artwork = findViewById(R.id.imageView);
         ImageButton repeat = findViewById(R.id.repeat);
         ImageButton shuffle = findViewById(R.id.shuffle);
         ImageButton local = findViewById(R.id.local);
         ImageButton net = findViewById(R.id.net);
         ImageButton queue = findViewById(R.id.queue);
         ImageButton settings = findViewById(R.id.settings);
-        ImageView status = findViewById(R.id.status);
+        ShapeableImageView status = findViewById(R.id.thumbImageView);
         Intent toStorage = new Intent(this, StorageActivity.class);
         Intent toSettings = new Intent(this, PlayerSettingsActivity.class);
         Intent toQueue = new Intent(this, QueueActivity.class);
@@ -133,6 +135,9 @@ public class MainActivity extends AppCompatActivity {
             public void onServiceConnected(ComponentName name, IBinder binder) {
                 ExoplayerService exoService = ((ExoplayerService.PlayerBinder)binder).getService();
                 bound = true;
+                if (player.getMediaItemCount() == 0){
+                    Glide.with(getApplicationContext()).load(R.drawable.noplay).dontAnimate().placeholder(R.drawable.noplay).centerCrop().into(status);
+                }
                 player.addListener(new Player.Listener() {
                     @Override
                     public void onIsLoadingChanged(boolean isLoading) {
@@ -146,8 +151,7 @@ public class MainActivity extends AppCompatActivity {
                 player.addListener(new Player.Listener() {
                     @Override
                     public void onPlayerError(@NonNull PlaybackException error) {
-                        status.setVisibility(View.VISIBLE);
-                        status.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.err));
+                        Glide.with(getApplicationContext()).load(R.drawable.err).dontAnimate().placeholder(R.drawable.noplay).centerCrop().into(status);
                         trackname.setText(R.string.error);
                         artist.setText(R.string.error_hint);
                         Toast.makeText(getApplicationContext(), error.getLocalizedMessage(),
@@ -158,7 +162,6 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.LENGTH_LONG).show();
                     }
                 });
-                artwork.setPlayer(player);
                 shuffle.setOnClickListener(view -> {
                     if(player.getShuffleModeEnabled()){
                         player.setShuffleModeEnabled(false);
@@ -192,7 +195,9 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onTracksChanged(Tracks tracks) {
                         if (player.getMediaItemCount() == 0){
-                            status.setVisibility(View.VISIBLE);
+                            Glide.with(getApplicationContext()).load(R.drawable.noplay).dontAnimate().placeholder(R.drawable.artwork).centerCrop().into(status);
+                        } else {
+                            Glide.with(getApplicationContext()).load(player.getMediaMetadata().artworkUri.toString()).dontAnimate().placeholder(R.drawable.artwork).centerCrop().into(status);
                         }
                         if (player.getMediaMetadata().title == null) {
                             try {
@@ -208,7 +213,6 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             artist.setText(player.getMediaMetadata().artist);
                         }
-                        status.setVisibility(View.INVISIBLE);
                     }
                 });
                 player.addListener(new Player.Listener() {

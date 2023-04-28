@@ -155,6 +155,8 @@ public class ExoplayerService extends Service {
             notificationManager.setSmallIcon(R.drawable.ic_launcher_foreground);
             notificationManager.setColorized(true);
             notificationManager.setColor(getColor(R.color.bg));
+            notificationManager.setUseNextActionInCompactView(true);
+            notificationManager.setUsePreviousActionInCompactView(true);
         } else if (player.getMediaItemCount() == 0) {
             playMediaItem(mediaItemUri, player);
         } else if (player.getMediaItemCount() > 0){

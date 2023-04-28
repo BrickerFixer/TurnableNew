@@ -68,32 +68,20 @@
         app:layout_constraintBottom_toTopOf="@+id/composerName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/thumbImageView" />
 
-    <com.google.android.exoplayer2.ui.StyledPlayerView
-        android:id="@+id/imageView"
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/thumbImageView"
         android:layout_width="330dp"
         android:layout_height="330dp"
-        app:default_artwork="@drawable/artwork"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.20999998"
-        app:use_artwork="true"
-        app:use_controller="false">
+        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.ExtraLarge">
 
-        <ImageView
-            android:id="@+id/status"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            app:default_artwork="@drawable/artwork"
-            app:srcCompat="@drawable/noplay"
-            app:use_artwork="true"
-            app:use_controller="false" />
-
-    </com.google.android.exoplayer2.ui.StyledPlayerView>
+    </com.google.android.material.imageview.ShapeableImageView>
 
     <TextView
         android:id="@+id/composerName"
@@ -108,7 +96,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageView"
+        app:layout_constraintTop_toBottomOf="@id/thumbImageView"
         app:layout_constraintVertical_bias="0.818" />
 
     <ImageButton
@@ -178,7 +166,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/thumbImageView"
         app:layout_constraintVertical_bias="0.305" />
 
     <ImageButton

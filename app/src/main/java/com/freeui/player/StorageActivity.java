@@ -53,7 +53,30 @@ public class StorageActivity extends AppCompatActivity implements OnItemClickLis
     }
     public ArrayList<DemoQueueData> addtoqueue() {
         ArrayList<DemoQueueData> list = new ArrayList<>();
-
+        list.add(new DemoQueueData("Like When We Were Kids",
+                "Harrison",
+                "", "https://cdn.discordapp.com/attachments/1080089637529341992/1093487346936184872/Harrison_-_Like_When_We_Were_Kids.mp4"));
+        list.add(new DemoQueueData("DAYDREAM",
+                "ESPIRIT",
+                "", "https://cdn.discordapp.com/attachments/1080089637529341992/1091701118997909554/ESPRIT___DAYDREAM.m4a"));
+        list.add(new DemoQueueData("High Hopes (Harrison Edit)",
+                "SOS Band & Harrison",
+                "", "https://cdn.discordapp.com/attachments/1080089637529341992/1080157643101962240/SOS_Band_-_High_Hopes_Harrison_Edit.opus"));
+        list.add(new DemoQueueData("Allure",
+                "System96",
+                "", "https://cdn.discordapp.com/attachments/1080089637529341992/1080157585749057626/System96_-_Allure.opus"));
+        list.add(new DemoQueueData("Up",
+                "Olly Murs",
+                "", "https://cdn.discordapp.com/attachments/766991746856779806/1093563927859830916/Up.opus"));
+        list.add(new DemoQueueData("Blossom",
+                "Milky Chance",
+                "", "https://cdn.discordapp.com/attachments/766991746856779806/1093563928711282781/Blossom.opus"));
+        list.add(new DemoQueueData("broken",
+                "lovelytheband",
+                "", "https://cdn.discordapp.com/attachments/766991746856779806/1093563929055207464/broken.opus"));
+        list.add(new DemoQueueData("Change",
+                "ChurChill",
+                "", "https://cdn.discordapp.com/attachments/766991746856779806/1093563928363151390/Change.opus"));
         return list;
     }
 

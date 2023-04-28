@@ -1,6 +1,7 @@
 package com.freeui.player;
 
 
+import static android.content.ContentValues.TAG;
 import static com.freeui.player.ExoplayerService.dao;
 import static com.freeui.player.R.string.rm_hint_everything;
 
@@ -14,6 +15,7 @@ import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -21,6 +23,7 @@ import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.MetadataRetriever;
 import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 
@@ -85,6 +88,27 @@ public class QueueActivity extends AppCompatActivity implements OnItemChildClick
     public ArrayList<QueueData> addtoqueue(){
         ArrayList<QueueData> list = new ArrayList<>();
         for (int i = 1; i <= player.getMediaItemCount(); i++){
+            ListenableFuture<TrackGroupArray> trackGroupsFuture = MetadataRetriever.retrieveMetadata(this, MediaItem.fromUri(dao.getAll().get(i).getTrackuri()));
+            Futures.addCallback(trackGroupsFuture, new FutureCallback<TrackGroupArray>() {
+                @Override
+                public void onSuccess(TrackGroupArray trackGroups) {
+                    for(int i = 0; i < trackGroups.length; i++){
+                        String format = trackGroups.get(i).getFormat(0).sampleMimeType;
+                        String lang = trackGroups.get(i).getFormat(0).language;
+                        String id = trackGroups.get(i).getFormat(0).id;
+
+                        if(format.contains("audio") && id != null && lang != null){
+                            Log.d(TAG, "onSuccess: " + lang + " " + id);
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    //handleFailure(t);
+                    Log.d(TAG, "onFailure: " + t);
+                }
+            }, executor);
             try {
                 title = MediaItem.fromUri(dao.getAll().get(i).getTrackuri()).mediaMetadata.title.toString();
             } catch (Exception e){
