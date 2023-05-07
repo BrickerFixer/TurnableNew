@@ -4,6 +4,7 @@ import static com.freeui.player.ExoplayerService.am;
 import static com.freeui.player.ExoplayerService.dao;
 import static com.freeui.player.ExoplayerService.focusRequest;
 import static com.freeui.player.ExoplayerService.player;
+import static com.freeui.player.ExoplayerService.session;
 
 
 import androidx.annotation.NonNull;
@@ -24,22 +25,20 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.GlideBuilder;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.Tracks;
 import com.google.android.exoplayer2.ui.StyledPlayerView;
-import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.Objects;
 
@@ -67,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
             }
             try {
                 int takeFlags = intent.getFlags();
-                takeFlags &= (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                takeFlags &= (Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 getApplicationContext().getContentResolver().takePersistableUriPermission(uri, takeFlags);
             } catch (SecurityException e) {
                 Log.e("", e.toString());
@@ -102,13 +101,14 @@ public class MainActivity extends AppCompatActivity {
         TextView artist = findViewById(R.id.composerName);
         TextView time = findViewById(R.id.timecode);
         SeekBar progress = findViewById(R.id.seekBar);
+        StyledPlayerView artwork = findViewById(R.id.imageView);
         ImageButton repeat = findViewById(R.id.repeat);
         ImageButton shuffle = findViewById(R.id.shuffle);
         ImageButton local = findViewById(R.id.local);
         ImageButton net = findViewById(R.id.net);
         ImageButton queue = findViewById(R.id.queue);
         ImageButton settings = findViewById(R.id.settings);
-        ShapeableImageView status = findViewById(R.id.thumbImageView);
+        ImageView status = findViewById(R.id.status);
         Intent toStorage = new Intent(this, StorageActivity.class);
         Intent toSettings = new Intent(this, PlayerSettingsActivity.class);
         Intent toQueue = new Intent(this, QueueActivity.class);
@@ -135,9 +135,6 @@ public class MainActivity extends AppCompatActivity {
             public void onServiceConnected(ComponentName name, IBinder binder) {
                 ExoplayerService exoService = ((ExoplayerService.PlayerBinder)binder).getService();
                 bound = true;
-                if (player.getMediaItemCount() == 0){
-                    Glide.with(getApplicationContext()).load(R.drawable.noplay).dontAnimate().placeholder(R.drawable.noplay).centerCrop().into(status);
-                }
                 player.addListener(new Player.Listener() {
                     @Override
                     public void onIsLoadingChanged(boolean isLoading) {
@@ -151,7 +148,8 @@ public class MainActivity extends AppCompatActivity {
                 player.addListener(new Player.Listener() {
                     @Override
                     public void onPlayerError(@NonNull PlaybackException error) {
-                        Glide.with(getApplicationContext()).load(R.drawable.err).dontAnimate().placeholder(R.drawable.noplay).centerCrop().into(status);
+                        status.setVisibility(View.VISIBLE);
+                        status.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.err));
                         trackname.setText(R.string.error);
                         artist.setText(R.string.error_hint);
                         Toast.makeText(getApplicationContext(), error.getLocalizedMessage(),
@@ -162,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.LENGTH_LONG).show();
                     }
                 });
+                artwork.setPlayer(player);
                 shuffle.setOnClickListener(view -> {
                     if(player.getShuffleModeEnabled()){
                         player.setShuffleModeEnabled(false);
@@ -195,9 +194,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onTracksChanged(Tracks tracks) {
                         if (player.getMediaItemCount() == 0){
-                            Glide.with(getApplicationContext()).load(R.drawable.noplay).dontAnimate().placeholder(R.drawable.artwork).centerCrop().into(status);
-                        } else {
-                            Glide.with(getApplicationContext()).load(player.getMediaMetadata().artworkUri.toString()).dontAnimate().placeholder(R.drawable.artwork).centerCrop().into(status);
+                            status.setVisibility(View.VISIBLE);
                         }
                         if (player.getMediaMetadata().title == null) {
                             try {
@@ -213,6 +210,7 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             artist.setText(player.getMediaMetadata().artist);
                         }
+                        status.setVisibility(View.INVISIBLE);
                     }
                 });
                 player.addListener(new Player.Listener() {
@@ -222,17 +220,17 @@ public class MainActivity extends AppCompatActivity {
                             play.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.pause_48px));
                             anim.start();
                         } else {
-                                play.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.play_arrow_48px));
-                                anim.stop();
+                            play.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.play_arrow_48px));
+                            anim.stop();
                         }
                     }
                 });
                 play.setOnClickListener(view -> {
                     if (player.isPlaying()) {
-                        player.pause();
+                        session.setPlaybackState(PlaybackStateCompat.fromPlaybackState(PlaybackStateCompat.STATE_PAUSED));
                     } else {
                         am.requestAudioFocus(focusRequest);
-                        player.play();
+                        session.setPlaybackState(PlaybackStateCompat.fromPlaybackState(PlaybackStateCompat.STATE_PLAYING));
                     }
                 });
                 next.setOnClickListener(v -> player.seekToNextMediaItem());
