@@ -227,10 +227,10 @@ public class MainActivity extends AppCompatActivity {
                 });
                 play.setOnClickListener(view -> {
                     if (player.isPlaying()) {
-                        session.setPlaybackState(PlaybackStateCompat.fromPlaybackState(PlaybackStateCompat.STATE_PAUSED));
+                        player.pause();
                     } else {
                         am.requestAudioFocus(focusRequest);
-                        session.setPlaybackState(PlaybackStateCompat.fromPlaybackState(PlaybackStateCompat.STATE_PLAYING));
+                        player.play();
                     }
                 });
                 next.setOnClickListener(v -> player.seekToNextMediaItem());
