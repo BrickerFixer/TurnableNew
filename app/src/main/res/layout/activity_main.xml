@@ -57,9 +57,15 @@
 
     <TextView
         android:id="@+id/artistcard"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:fadingEdge="horizontal"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:fontFamily="@font/mono"
+        android:layout_alignParentEnd="true"
         android:gravity="center"
         android:text="@string/noplay"
         android:textAlignment="center"

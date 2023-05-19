@@ -53,6 +53,18 @@ public class StorageActivity extends AppCompatActivity implements OnItemClickLis
     }
     public ArrayList<DemoQueueData> addtoqueue() {
         ArrayList<DemoQueueData> list = new ArrayList<>();
+        list.add(new DemoQueueData("Если у вас нету тёти",
+                "Киноконцерн \"Мосфильм\"",
+                "", "https://cdn.discordapp.com/attachments/1080089637529341992/1109117331671629894/7lR9nDzLKXE.opus"));
+        list.add(new DemoQueueData("Остров невезения",
+                "Киноконцерн \"Мосфильм\"",
+                "", "https://cdn.discordapp.com/attachments/1080089637529341992/1109117394544250910/goFIxxWru78.opus"));
+        list.add(new DemoQueueData("Песенка о медведях",
+                "Киноконцерн \"Мосфильм\"",
+                "", "https://cdn.discordapp.com/attachments/1080089637529341992/1109117445895094314/dExwT_pEr9w.opus"));
+        list.add(new DemoQueueData("Если б я был султан",
+                "Киноконцерн \"Мосфильм\"",
+                "", "https://cdn.discordapp.com/attachments/1080089637529341992/1109117494146388120/39GD6_qgcLI.opus"));
         list.add(new DemoQueueData("Like When We Were Kids",
                 "Harrison",
                 "", "https://cdn.discordapp.com/attachments/1080089637529341992/1093487346936184872/Harrison_-_Like_When_We_Were_Kids.mp4"));
