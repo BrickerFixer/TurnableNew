@@ -1,8 +1,8 @@
 # Turnable
 ![Artwork](artwork/header.png)
-## DISCLAIMER:
-Warning! App contains a lot of trash code and is still in development!
-Please, understand that this is my first ever usable app made, thanks!
+## RU README FOR SAMSUNG:
+**ИНСТРУКЦИЯ ЗДЕСЬ!!!**
+Есть четыре категории в разных углах, где можно выбрать различные функции приложения. В настройках пока ничего нет, так как не было идей того что настраивать кроме тем. В правом нижнем углу можно включить локальные треки. В левом нижнем углу находится добавление треков через онлайн. В верхнем левом углу можно работать с очередью треков и переключать их через recyclerview. Метаданные не отображаются, из-за лимитации метода getMetadata() на воспроизводимый трек, альтернативный метод через ListenableFuture можно добавить... Но с ним очень тяжко работать. 
 ## Ooo! What is this?
 Turnable is a player that allows users to play files from network with streaming over HTTP. It uses ExoPlayer2 as it's base and has a pretty slick design.
 ## Why does this thing exist...
